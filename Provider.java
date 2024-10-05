@@ -8,5 +8,6 @@ public abstract class Provider extends Person {
     public Provider(Location location) {
         this.location = location;
     }
+
     public abstract int rate();
 }
