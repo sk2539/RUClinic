@@ -18,13 +18,17 @@ public class Person implements Comparable<Person> {
     }
 
     @Override
-    public boolean equals(Person person) {
-
+    public boolean equals(Object object) {
+        if (object instanceof Person) { // Checks if the object is of type Appointment.
+            Person person = (Person) object;
+            return this.profile.equals(person.profile);
+        }
+        return false;
     }
 
     @Override
     public String toString() {
-
+        return this.profile.toString();
     }
 
     // FIGURE OUT POLYMORPHISM FOR THIS
