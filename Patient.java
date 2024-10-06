@@ -4,4 +4,7 @@ public class Patient extends Person{
     public Patient(Visit visit) {
         this.visit = visit;
     }
+
+    @Override
+
 }

@@ -2,9 +2,25 @@ public class Timeslot implements Comparable<Timeslot> {
     private int hour;
     private int minute;
 
-    public Timeslot(int hour, int minute) { // in military time
-        this.hour = hour;
-        this.minute = minute;
+    public Timeslot() {
+    }
+
+    public void setTimeslot(int slot) {
+        switch (slot) {
+            case 1 -> { this.hour = 9; this.minute = 0; }
+            case 2 -> { this.hour = 9; this.minute = 30; }
+            case 3 -> { this.hour = 10; this.minute = 0; }
+            case 4 -> { this.hour = 10; this.minute = 30; }
+            case 5 -> { this.hour = 11; this.minute = 0; }
+            case 6 -> { this.hour = 11; this.minute = 30; }
+            case 7 -> { this.hour = 14; this.minute = 0; }
+            case 8 -> { this.hour = 14; this.minute = 30; }
+            case 9 -> { this.hour = 15; this.minute = 0; }
+            case 10 -> { this.hour = 15; this.minute = 30; }
+            case 11 -> { this.hour = 16; this.minute = 0; }
+            case 12 -> { this.hour = 16; this.minute = 30; }
+            default -> throw new IllegalArgumentException("Invalid slot number");
+        }
     }
 
     @Override
@@ -36,15 +52,11 @@ public class Timeslot implements Comparable<Timeslot> {
     @Override
     public String toString() {
         String minuteString = String.format("%02d", this.minute);
-        if (hour == 0) {
-            return "12:" + minuteString + " AM";
-        }
-        else if (hour == 12) {
-            return "12:" + minuteString + " PM";
-        } else if (hour > 12) {
-            return (hour - 12) + ":" + minuteString + " PM";
-        } else {
+        if (this.hour <= 11) {
             return hour + ":" + minuteString + " AM";
+        } else if (this.hour > 11) {
+            return hour + ":" + minuteString + " PM";
         }
+        return "";
     }
 }

@@ -5,12 +5,12 @@ public class Imaging extends Appointment {
         super(date, timeslot, patient, provider);
     }
 
-    public Radiology getRoom() {
-        return room;
+    public void setRoom(Radiology room) { // imagingAppointment.setRoom(Radiology.CATSCAN)
+        this.room = room;
     }
 
-    public void setRoom(Radiology room) {
-        this.room = room;
+    public Radiology getRoom() {
+        return room;
     }
 
 }

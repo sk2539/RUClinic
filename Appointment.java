@@ -54,13 +54,13 @@ public class Appointment implements Comparable <Appointment> {
          */
         public int compareByPatient(Appointment appt) {
                 // Compare by last name.
-                int lastNameComparison = this.patient.getLastName().compareTo(appt.patient.getLastName());
+                int lastNameComparison = this.patient.getProfile().getLastName().compareTo(appt.patient.getProfile().getLastName());
                 // If last names are equal, compare by first name.
                 if (lastNameComparison == 0) {
-                        int firstNameComparison = this.patient.getFirstName().compareTo(appt.patient.getFirstName());
+                        int firstNameComparison = this.patient.getProfile().getFirstName().compareTo(appt.patient.getProfile().getFirstName());
                         // If first names are equal, compare by date of birth.
                         if (firstNameComparison == 0) {
-                                int dobComparison = this.patient.getDob().compareTo(appt.patient.getDob());
+                                int dobComparison = this.patient.getProfile().getDob().compareTo(appt.patient.getProfile().getDob());
                                 // If date of birth is also equal, compare by appointment date and time.
                                 if (dobComparison == 0) {
                                         int dateComparison = this.date.compareTo(appt.date);
