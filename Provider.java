@@ -9,5 +9,11 @@ public abstract class Provider extends Person {
         this.location = location;
     }
 
+    public Location getLocation()
+    {
+        return this.location;
+    }
+
     public abstract int rate();
+
 }

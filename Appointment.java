@@ -148,4 +148,13 @@ public class Appointment implements Comparable <Appointment> {
         public Timeslot getTimeslot() {
                 return this.timeslot;
         }
+
+        public Person getProfile() {
+                return this.patient;
+        }
+
+        public Person getProvider()
+        {
+                return this.provider;
+        }
 }
