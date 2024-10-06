@@ -73,6 +73,7 @@ public class List<E> implements Iterable<E> {
         return size;
     }
 
+    //figure this out
     public Iterator<E> iterator() {
         return new ListIterator<>();
     }
@@ -92,6 +93,7 @@ public class List<E> implements Iterable<E> {
         return find(e);
     }
 
+    //figure this out
     private class ListIterator<E> implements Iterator<E> {
         public boolean hasNext() { //return false if it’s empty or end of list
             if(iterator() == null || objects.length == size)
@@ -104,5 +106,12 @@ public class List<E> implements Iterable<E> {
         public E next() { //return the next object in the list
             return (E) objects[0];
         }
+    }
+
+    public class ListMethods<E> extends List
+    {
+        //timeslot taken
+        //timeslot taken by patient
+        //date exists
     }
 }
