@@ -89,8 +89,8 @@ public class ClinicManager {
                 String [] splittedLine = line.split(" ");
                 if (splittedLine[0]=="D") {
                     Profile profile = new Profile (splittedLine[1], splittedLine[2], stringToDate(splittedLine[3]));
-
-                    Doctor doctor = new Doctor(profile, )
+                    Specialty specialty = new Specialty(splittedLine[5]);
+                    Doctor doctor = new Doctor(profile, setLocation(splittedLine[4]), specialty, splittedLine[6]);
                 }
             }
         } catch (IOException e) {
@@ -98,26 +98,27 @@ public class ClinicManager {
         }
     }
 
-    public void setLocation(String input) {
+    public Location setLocation(String input) {
         Location location;
-        if (input=="BRIDGEWATER") {
-            location = Location.Bridgewater;
+        if (input.equals("BRIDGEWATER")) {
+            return Location.Bridgewater;
         }
         else if (input.equals("CLARK")) {
-            location = Location.Clark;
+            return Location.Clark;
         }
-        else if (input == "PRINCETON") {
-            location = Location.Princeton;
+        else if (input.equals("PRINCETON")) {
+            return Location.Princeton;
         }
-        else if (input == "PISCATAWAY") {
-            location = Location.Piscataway;
+        else if (input.equals("PISCATAWAY")) {
+            return Location.Piscataway;
         }
-        else if (input == "MORRISTOWN") {
-            location = Location.Morristown;
+        else if (input.equals("MORRISTOWN")) {
+            return Location.Morristown;
         }
-        else if (input == "EDISON") {
-            location = Location.Edison;
+        else if (input.equals("EDISON")) {
+            return Location.Edison;
         }
+        return null;
     }
 
     public void scheduleDocAppt(String [] input) {
