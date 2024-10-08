@@ -6,9 +6,12 @@ import java.io.IOException;
 public class ClinicManager {
     List <Appointment> appts = new List <Appointment>();
     List <Provider> providers = new List <Provider>();
+    CircularLinkedList technicians = new CircularLinkedList();
     // this class replaces Scheduler class from project1
     public void run() {
-        System.out.println("Clinic Manager is running");
+        loadProviders();
+        printProviders();
+        System.out.println("Clinic Manager is running...");
         Scanner in = new Scanner(System.in);
         String input = in.nextLine().trim();
         String [] splittedInput = input.split(",");
@@ -29,43 +32,43 @@ public class ClinicManager {
                         case "D":
                             scheduleDocAppt(splittedInput);
                             break;
-                        case "T":
-                            schedule(splittedInput);
-                            break;
-                        case "C":
-                            cancel(splittedInput);
-                            break;
-                        case "R":
-                            reschedule(splittedInput);
-                            break;
-                        case "PA":
-                            if (appts.size() == 0) {
-                                System.out.println("The schedule calendar is empty.");
-                            } else {
-                                appts.printByAppointment();
-                            }
-                            break;
-                        case "PP":
-                            if (appts.size() == 0) {
-                                System.out.println("The schedule calendar is empty.");
-                            } else {
-                                appts.printByPatient();
-                            }
-                            break;
-                        case "PL":
-                            if (appts.size() == 0) {
-                                System.out.println("The schedule calendar is empty.");
-                            } else {
-                                appts.printByLocation();
-                            }
-                            break;
-                        case "PS":
-                            if (appts.size() == 0) {
-                                System.out.println("The schedule calendar is empty.");
-                            } else {
-                                appts.printAllCharge();
-                            }
-                            break;
+//                        case "T":
+//                            schedule(splittedInput);
+//                            break;
+//                        case "C":
+//                            cancel(splittedInput);
+//                            break;
+//                        case "R":
+//                            reschedule(splittedInput);
+//                            break;
+//                        case "PA":
+//                            if (appts.size() == 0) {
+//                                System.out.println("The schedule calendar is empty.");
+//                            } else {
+//                                appts.printByAppointment();
+//                            }
+//                            break;
+//                        case "PP":
+//                            if (appts.size() == 0) {
+//                                System.out.println("The schedule calendar is empty.");
+//                            } else {
+//                                appts.printByPatient();
+//                            }
+//                            break;
+//                        case "PL":
+//                            if (appts.size() == 0) {
+//                                System.out.println("The schedule calendar is empty.");
+//                            } else {
+//                                appts.printByLocation();
+//                            }
+//                            break;
+//                        case "PS":
+//                            if (appts.size() == 0) {
+//                                System.out.println("The schedule calendar is empty.");
+//                            } else {
+//                                appts.printAllCharge();
+//                            }
+//                            break;
                         default:
                             if (command.length() > 0 && Character.isLowerCase(command.charAt(0))) {
                                 System.out.println("Invalid command.");
@@ -86,16 +89,50 @@ public class ClinicManager {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String [] splittedLine = line.split(" ");
-                if (splittedLine[0]=="D") {
-                    Profile profile = new Profile (splittedLine[1], splittedLine[2], stringToDate(splittedLine[3]));
-                    Specialty specialty = new Specialty(splittedLine[5]);
+                // Split the line into individual fields
+                String[] splittedLine = line.split("  ");
+                // Use .equals() to compare strings, not ==
+                if (splittedLine[0].equals("D")) {
+                    Profile profile = new Profile(splittedLine[1], splittedLine[2], stringToDate(splittedLine[3]));
+                    Specialty specialty = setSpecialty(splittedLine[5]);
                     Doctor doctor = new Doctor(profile, setLocation(splittedLine[4]), specialty, splittedLine[6]);
+                    providers.add(doctor);
+                } else if (splittedLine[0].equals("T")) {
+                    Profile profile = new Profile(splittedLine[1], splittedLine[2], stringToDate(splittedLine[3]));
+                    Location location = setLocation(splittedLine[4]);
+                    int rate = Integer.parseInt(splittedLine[5]);
+                    Technician technician = new Technician(profile, location, rate);
+                    providers.add(technician);
+                    technicians.addTechnician(technician);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Providers loaded to the list.");
+    }
+
+    public void printProviders() {
+        Sort.sortByProvider(providers); // check if this is the right syntax
+        for (int i = 0; i<providers.size(); i++) {
+            System.out.println(providers.get(i).toString());
+        }
+
+        technicians.display();
+    }
+
+    public Specialty setSpecialty(String input) {
+        Specialty specialty;
+        if (input.equals("FAMILY")) {
+            return Specialty.Family;
+        }
+        else if (input.equals("PEDIATRICIAN")) {
+            return Specialty.Pediatrician;
+        }
+        else if (input.equals("PRINCETON")) {
+            return Specialty.Allergist;
+        }
+        return null;
     }
 
     public Location setLocation(String input) {
@@ -129,13 +166,24 @@ public class ClinicManager {
 
     }
 
-    // can i make this static?
     public Date stringToDate(String date) {
-        String [] dateString = date.split("/");
+        String[] dateString = date.split("/");
+
+        if (dateString.length != 3) {
+            throw new IllegalArgumentException("Invalid date format. Expected format: MM/DD/YYYY");
+        }
         int month = Integer.parseInt(dateString[0]);
         int day = Integer.parseInt(dateString[1]);
         int year = Integer.parseInt(dateString[2]);
+
+        // Create a Date object
         Date dateObject = new Date(year, month, day);
-        return dateObject;
+
+        // Check if the date is valid
+        if (!dateObject.isValidDate()) {
+            throw new IllegalArgumentException("Invalid date: " + date);
+        }
+        return dateObject; // Return the valid Date object
     }
+
 }

@@ -2,6 +2,10 @@ public class Doctor extends Provider {
     private Specialty specialty;
     private String npi;
 
+    public Doctor() {
+        super();
+    }
+
     public Doctor(Profile profile, Location location, Specialty specialty, String npi) {
         super(profile, location);
         this.specialty = specialty;
@@ -18,7 +22,7 @@ public class Doctor extends Provider {
 
     @Override
     public int rate() {
-        return 0;
+        return this.specialty.getCharge();
     }
 
     @Override

@@ -39,9 +39,14 @@ public class List<E> implements Iterable<E> {
     }
 
     public void add(E e) {
+        if (e == null) {
+            throw new IllegalArgumentException("Null elements are not allowed.");
+        }
+
         if (size == objects.length) {
             grow();
         }
+
         if (!contains(e)) {
             objects[size] = e;
             size++;
@@ -92,6 +97,8 @@ public class List<E> implements Iterable<E> {
     public int indexOf(E e) { //return the index of the object or return -1
         return find(e);
     }
+
+
 
     //figure this out
     private class ListIterator<E> implements Iterator<E> {
@@ -144,6 +151,5 @@ public class List<E> implements Iterable<E> {
             }
             return -1;
         }
-
     }
 }
