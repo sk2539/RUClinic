@@ -110,8 +110,40 @@ public class List<E> implements Iterable<E> {
 
     public class ListMethods<E> extends List
     {
-        //timeslot taken
-        //timeslot taken by patient
-        //date exists
+        public int timeslotTaken(Provider provider, Timeslot timeslot) {
+            for (int i = 0; i < size; i++) {
+                if(objects[i] instanceof Appointment) {
+
+                    if (((Appointment) objects[i]).getProvider().equals(provider) && ((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
+        public int timeslotTakenByPatient(Provider provider, Timeslot timeslot, Profile patient) {
+            for (int i = 0; i<size; i++) {
+                if(objects[i] instanceof Appointment)
+                {
+                    if (((Appointment) objects[i]).getProvider().equals(provider) && ((Appointment) objects[i]).getTimeslot().equals(timeslot) && ((Appointment) objects[i]).getProfile().equals(patient)) {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
+        public int dateExists (Date date)
+        {
+            for(int i = 0; i < size; i++)
+            {
+                if(objects[i] instanceof Appointment)
+                {
+                    if(((Appointment) objects[i]).getDate().equals(date))
+                        return i;
+                }
+            }
+            return -1;
+        }
+
     }
 }
