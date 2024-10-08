@@ -81,15 +81,42 @@ public class ClinicManager {
         }
     }
 
-    public static void loadProviders() {
-        String file = "/providers.txt";
+    public void loadProviders() {
+        String file = "providers.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
+                String [] splittedLine = line.split(" ");
+                if (splittedLine[0]=="D") {
+                    Profile profile = new Profile (splittedLine[1], splittedLine[2], stringToDate(splittedLine[3]));
+
+                    Doctor doctor = new Doctor(profile, )
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setLocation(String input) {
+        Location location;
+        if (input=="BRIDGEWATER") {
+            location = Location.Bridgewater;
+        }
+        else if (input.equals("CLARK")) {
+            location = Location.Clark;
+        }
+        else if (input == "PRINCETON") {
+            location = Location.Princeton;
+        }
+        else if (input == "PISCATAWAY") {
+            location = Location.Piscataway;
+        }
+        else if (input == "MORRISTOWN") {
+            location = Location.Morristown;
+        }
+        else if (input == "EDISON") {
+            location = Location.Edison;
         }
     }
 
@@ -101,6 +128,7 @@ public class ClinicManager {
 
     }
 
+    // can i make this static?
     public Date stringToDate(String date) {
         String [] dateString = date.split("/");
         int month = Integer.parseInt(dateString[0]);
