@@ -5,20 +5,20 @@ public class Timeslot implements Comparable<Timeslot> {
     public Timeslot() {
     }
 
-    public void setTimeslot(int slot) {
+    public void setTimeslot(String slot) {
         switch (slot) {
-            case 1 -> { this.hour = 9; this.minute = 0; }
-            case 2 -> { this.hour = 9; this.minute = 30; }
-            case 3 -> { this.hour = 10; this.minute = 0; }
-            case 4 -> { this.hour = 10; this.minute = 30; }
-            case 5 -> { this.hour = 11; this.minute = 0; }
-            case 6 -> { this.hour = 11; this.minute = 30; }
-            case 7 -> { this.hour = 14; this.minute = 0; }
-            case 8 -> { this.hour = 14; this.minute = 30; }
-            case 9 -> { this.hour = 15; this.minute = 0; }
-            case 10 -> { this.hour = 15; this.minute = 30; }
-            case 11 -> { this.hour = 16; this.minute = 0; }
-            case 12 -> { this.hour = 16; this.minute = 30; }
+            case "1" -> { this.hour = 9; this.minute = 0; }
+            case "2" -> { this.hour = 9; this.minute = 30; }
+            case "3" -> { this.hour = 10; this.minute = 0; }
+            case "4" -> { this.hour = 10; this.minute = 30; }
+            case "5" -> { this.hour = 11; this.minute = 0; }
+            case "6" -> { this.hour = 11; this.minute = 30; }
+            case "7" -> { this.hour = 14; this.minute = 0; }
+            case "8" -> { this.hour = 14; this.minute = 30; }
+            case "9" -> { this.hour = 15; this.minute = 0; }
+            case "10" -> { this.hour = 15; this.minute = 30; }
+            case "11" -> { this.hour = 16; this.minute = 0; }
+            case "12" -> { this.hour = 16; this.minute = 30; }
             default -> throw new IllegalArgumentException("Invalid slot number");
         }
     }
