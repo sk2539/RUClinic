@@ -37,7 +37,13 @@ public abstract class Provider extends Person {
 
     @Override
     public String toString() {
-        return super.toString();
+        if (this instanceof Doctor) {
+            return "[" + super.toString() + ", " + this.location + ", " + this.location.getCounty() + " " + this.location.getZip() + " [" + ((Doctor) this).getSpecialty() + ", " + ((Doctor) this).getNPI();
+        }
+        else if (this instanceof Technician) {
+            return "[" + super.toString() + ", " + this.location + ", " + this.location.getCounty() + " " + this.location.getZip() + "] [rate: " + ((Technician) this).rate();
+        }
+        throw new ClassCastException("Cannot perform toString() on a non-Person object.");
     }
 
 }

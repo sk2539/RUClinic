@@ -1,4 +1,7 @@
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class ClinicManager {
     List <Appointment> appts = new List <Appointment>();
@@ -36,28 +39,28 @@ public class ClinicManager {
                             reschedule(splittedInput);
                             break;
                         case "PA":
-                            if (appts.getSize() == 0) {
+                            if (appts.size() == 0) {
                                 System.out.println("The schedule calendar is empty.");
                             } else {
                                 appts.printByAppointment();
                             }
                             break;
                         case "PP":
-                            if (appts.getSize() == 0) {
+                            if (appts.size() == 0) {
                                 System.out.println("The schedule calendar is empty.");
                             } else {
                                 appts.printByPatient();
                             }
                             break;
                         case "PL":
-                            if (appts.getSize() == 0) {
+                            if (appts.size() == 0) {
                                 System.out.println("The schedule calendar is empty.");
                             } else {
                                 appts.printByLocation();
                             }
                             break;
                         case "PS":
-                            if (appts.getSize() == 0) {
+                            if (appts.size() == 0) {
                                 System.out.println("The schedule calendar is empty.");
                             } else {
                                 appts.printAllCharge();
@@ -66,7 +69,7 @@ public class ClinicManager {
                         default:
                             if (command.length() > 0 && Character.isLowerCase(command.charAt(0))) {
                                 System.out.println("Invalid command.");
-                            } else if (appts.getSize() == 0) {
+                            } else if (appts.size() == 0) {
                                 System.out.println("The schedule calendar is empty.");
                             } else {
                                 return;
@@ -79,27 +82,14 @@ public class ClinicManager {
     }
 
     public static void loadProviders() {
-        String provider = "D  ANDREW  PATEL  01/21/1989  BRIDGEWATER  FAMILY  01\n" +
-                "D  RACHAEL  LIM  11/30/1975  BRIDGEWATER  PEDIATRICIAN  23\n" +
-                "D  MONICA  ZIMNES  03/11/1981  CLARK  FAMILY  11\n" +
-                "D  JOHN  HARPER  03/01/1981  CLARK  FAMILY  32\n" +
-                "D  TOM  KAUR  11/05/1972  PRINCETON  ALLERGIST  54\n" +
-                "D  ERIC  TAYLOR  05/29/1969  PISCATAWAY  PEDIATRICIAN  91\n" +
-                "D  BEN  RAMESH  04/08/1981  MORRISTOWN  ALLERGIST  39\n" +
-                "D  JUSTIN  CERAVOLO  09/22/1980  EDISON  PEDIATRICIAN  09\n" +
-                "D  GARY  JOHNSON  12/13/1977  EDISON  FAMILY  85\n" +
-                "D  BEN  JERRY  12/28/1977  PISCATAWAY  FAMILY  77\n" +
-                "T  GARY  JOHNSON  11/14/1987  PISCATAWAY  110\n" +
-                "T  BEN  JERRY  9/28/1987  PISCATAWAY  150\n" +
-                "T  FRANK  LIN  6/24/1999  PISCATAWAY  120\n" +
-                "T  CHARLES  BROWN  6/24/1999  BRIDGEWATER  100\n" +
-                "T  MONICA  FOX  10/10/1995  BRIDGEWATER  130\n" +
-                "T  JENNY  PATEL  8/09/1991  BRIDGEWATER  125";
-        String [] splittedProvider = provider.split("\n");
-        for (int i = 0; i<splittedProvider.length; i++) {
-            if (splittedProvider[i].charAt(0)=='D') {
-                Doctor doc = new
+        String file = "/providers.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

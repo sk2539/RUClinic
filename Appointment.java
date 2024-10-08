@@ -119,7 +119,9 @@ public class Appointment implements Comparable <Appointment> {
          */
         @Override
         public String toString() {
-                return this.date.toString() + " " + this.timeslot.toString() + " " + this.patient.toString() + " [" + this.provider.getProvider().toUpperCase() + ", " + this.provider.getLocation() + ", " + this.getLocationByProvider().getCounty() + " " + this.getLocationByProvider().getZip() + ", " + this.getSpecialtyByProvider() + "]";
+                // HOW TO FIX THIS??
+                //10/30/2024 4:00 PM Jane Doe 5/1/1996 [RACHAEL LIM 11/30/1975, BRIDGEWATER, Somerset 08807][PEDIATRICIAN, #23] booked.
+                return this.provider.toString();
         }
 
         /**
