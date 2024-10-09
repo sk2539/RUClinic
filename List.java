@@ -3,6 +3,7 @@ import java.util.Iterator;
 public class List<E> implements Iterable<E> {
     private E[] objects;
     private int size;
+    int NOT_FOUND = -1;
 
     public List() { //default constructor with an initial capacity of 4.
         objects = (E[]) new Object[4];
@@ -39,9 +40,14 @@ public class List<E> implements Iterable<E> {
     }
 
     public void add(E e) {
+        if (e == null) {
+            throw new IllegalArgumentException("Null elements are not allowed.");
+        }
+
         if (size == objects.length) {
             grow();
         }
+
         if (!contains(e)) {
             objects[size] = e;
             size++;
@@ -93,6 +99,39 @@ public class List<E> implements Iterable<E> {
         return find(e);
     }
 
+    public int getDoctorFromNPI(String npi) {
+        for (int i = 0; i<size; i++) {
+            if(objects[i] instanceof Doctor) {
+                if (((Doctor) objects[i]).getNPI().equals(npi)) {
+                    return i;
+                }
+            }
+        }
+        return NOT_FOUND;
+    }
+    public int getTechnicianFromRate(int rate) {
+        for (int i = 0; i<size; i++) {
+            if(objects[i] instanceof Technician) {
+                if (((Technician) objects[i]).rate()==(rate)) {
+                    return i;
+                }
+            }
+        }
+        return NOT_FOUND;
+    }
+
+    public int timeslotTaken(Provider provider, Timeslot timeslot) {
+        for (int i = 0; i < size; i++) {
+            if(objects[i] instanceof Appointment) {
+
+                if (((Appointment) objects[i]).getProvider().equals(provider) && ((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
+                    return i;
+                }
+            }
+        }
+        return NOT_FOUND;
+    }
+
     //figure this out
     private class ListIterator<E> implements Iterator<E> {
         int currIndex = 0;
@@ -115,17 +154,6 @@ public class List<E> implements Iterable<E> {
     //put this in a new class file
     public class ListMethods<E> extends List
     {
-        public int timeslotTaken(Provider provider, Timeslot timeslot) {
-            for (int i = 0; i < size; i++) {
-                if(objects[i] instanceof Appointment) {
-
-                    if (((Appointment) objects[i]).getProvider().equals(provider) && ((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
-                        return i;
-                    }
-                }
-            }
-            return -1;
-        }
         public int timeslotTakenByPatient(Provider provider, Timeslot timeslot, Profile patient) {
             for (int i = 0; i<size; i++) {
                 if(objects[i] instanceof Appointment)
@@ -135,7 +163,7 @@ public class List<E> implements Iterable<E> {
                     }
                 }
             }
-            return -1;
+            return NOT_FOUND;
         }
         public int dateExists (Date date)
         {
@@ -147,8 +175,7 @@ public class List<E> implements Iterable<E> {
                         return i;
                 }
             }
-            return -1;
+            return NOT_FOUND;
         }
-
     }
 }

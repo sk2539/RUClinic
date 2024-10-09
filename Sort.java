@@ -15,7 +15,18 @@ public class Sort {
         }
     }
     public static void sortByProvider(List<Provider> list) {
-
+        int n = list.size();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                String lastName1 = list.get(j).getProfile().getLastName();
+                String lastName2 = list.get(j + 1).getProfile().getLastName();
+                if (lastName1.compareTo(lastName2) > 0) {
+                    Provider temp = list.get(j);
+                    list.set(j, list.get(j + 1));
+                    list.set(j + 1, temp);
+                }
+            }
+        }
     }
 
     public static void sortByPatient(List<Appointment> list)

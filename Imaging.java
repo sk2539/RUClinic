@@ -12,5 +12,4 @@ public class Imaging extends Appointment {
     public Radiology getRoom() {
         return room;
     }
-
 }
