@@ -95,8 +95,10 @@ public class List<E> implements Iterable<E> {
 
     //figure this out
     private class ListIterator<E> implements Iterator<E> {
+        int currIndex = 0;
+
         public boolean hasNext() { //return false if it’s empty or end of list
-            if(iterator() == null || objects.length == size)
+            if(currIndex == 0 || currIndex == objects.length)
             {
                 return false;
             }
@@ -104,10 +106,13 @@ public class List<E> implements Iterable<E> {
         }
 
         public E next() { //return the next object in the list
-            return (E) objects[0];
+            E returnNext = (E) objects[currIndex];
+            currIndex++;
+            return returnNext;
         }
     }
 
+    //put this in a new class file
     public class ListMethods<E> extends List
     {
         public int timeslotTaken(Provider provider, Timeslot timeslot) {

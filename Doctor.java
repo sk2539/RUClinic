@@ -21,6 +21,7 @@ public class Doctor extends Provider {
         return 0;
     }
 
+    //change the parameter to Doctor
     @Override
     public int compareTo(Person person) {
         if (person instanceof Doctor) {
