@@ -25,11 +25,9 @@ public class Doctor extends Provider {
         return this.specialty.getCharge();
     }
 
-    //change the parameter to Doctor
-    @Override
-    public int compareTo(Person person) {
-        if (person instanceof Doctor) {
-            Doctor doctor = (Doctor) person;
+    public int compareTo(Doctor doc) {
+        if (doc instanceof Doctor) {
+            Doctor doctor = (Doctor) doc;
             return this.profile.compareTo(doctor.getProfile());
         }
         throw new ClassCastException("Cannot compare non-Doctor objects.");

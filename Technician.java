@@ -19,10 +19,9 @@ public class Technician extends Provider {
         return this.ratePerVisit;
     }
 
-    @Override
-    public int compareTo(Person person) {
-        if (person instanceof Technician) {
-            Technician technician = (Technician) person;
+    public int compareTo(Technician tech) {
+        if (tech instanceof Technician) {
+            Technician technician = (Technician) tech;
 
             int profileComparison = this.getProfile().compareTo(technician.getProfile());
             if (profileComparison == 0) {
