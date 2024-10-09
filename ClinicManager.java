@@ -33,7 +33,7 @@ public class ClinicManager {
                             scheduleDocAppt(splittedInput);
                             break;
 //                        case "T":
-//                            schedule(splittedInput);
+//                            scheduleTechAppt(splittedInput);
 //                            break;
 //                        case "C":
 //                            cancel(splittedInput);
@@ -70,8 +70,8 @@ public class ClinicManager {
 //                            }
 //                            break;
                         default:
-                            if (command.length() > 0 && Character.isLowerCase(command.charAt(0))) {
-                                System.out.println("Invalid command.");
+                            if (!command.isEmpty() && Character.isLowerCase(command.charAt(0))) {
+                                System.out.println("Invalid command!");
                             } else if (appts.size() == 0) {
                                 System.out.println("The schedule calendar is empty.");
                             } else {
@@ -79,7 +79,12 @@ public class ClinicManager {
                             }
                             break;
                     }
+                    input = in.nextLine();
+                    splittedInput = input.split(",");
                 }
+            }
+            else {
+                System.out.println("Missing data tokens.");
             }
         }
     }
@@ -159,11 +164,55 @@ public class ClinicManager {
     }
 
     public void scheduleDocAppt(String [] input) {
-        Date date = stringToDate(input[1]);
         Timeslot slot = new Timeslot();
         slot.setTimeslot(input[2]);
+        if (!slot.setTimeslot(input[2])) {
+            System.out.println(input[2] + " is not a valid time slot.");
+            return;
+        }
+        Date dob = stringToDate(input[5]);
+        if (!dob.isValidDate()) {
+            System.out.println("Patient dob: " + input[5] + " is not a valid calendar date.");
+            return;
+        }
         Profile profile = new Profile(input[3], input[4], stringToDate(input[5]));
+        int matchingDoctorIndex = providers.getDoctorFromNPI(input[6]);
+        if (matchingDoctorIndex==-1) {
+            System.out.println(input[6] + " - provider doesn't exist.");
+            return;
+        }
+        Doctor doctor = (Doctor) providers.get(matchingDoctorIndex);
 
+        // this might not work properly!!
+        if (appts.timeslotTaken(doctor, slot) != -1) {
+            System.out.println(appts.get(appts.timeslotTaken(doctor, slot)).getProfile().toString() + " has an existing appointment at the same timeslot.");
+            return;
+        }
+        if (checkDate(input[1])) { //2/28/2025 9:00 AM John Doe 12/13/1989 [ANDREW PATEL 1/21/1989, BRIDGEWATER, Somerset 08807][FAMILY, #01] booked.
+            System.out.println(doctor.toString());
+        }
+    }
+
+    public boolean checkDate(String input) {
+        Date date = stringToDate(input);
+        if (date==null) {
+            return false;
+        }
+        else if(date.isBeforeToday() || date.isToday()) {
+            System.out.println("Appointment date: " + input + " is today or a date before today.");
+            return false;
+        }
+        else if (date.onWeekend()) {
+            System.out.println("Appointment date: " + input + " is Saturday or Sunday.");
+            return false;
+        }
+        else if(!date.isWithinSixMonths()) {
+            System.out.println("Appointment date: " + input + " is not within six months.");
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     public Date stringToDate(String date) {
@@ -176,14 +225,14 @@ public class ClinicManager {
         int day = Integer.parseInt(dateString[1]);
         int year = Integer.parseInt(dateString[2]);
 
-        // Create a Date object
         Date dateObject = new Date(year, month, day);
 
-        // Check if the date is valid
         if (!dateObject.isValidDate()) {
-            throw new IllegalArgumentException("Invalid date: " + date);
+            System.out.println("Appointment date: " + date + " is not a valid calendar date.");
+            return null;
         }
-        return dateObject; // Return the valid Date object
+        else {
+            return dateObject;
+        }
     }
-
 }

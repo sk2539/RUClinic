@@ -10,10 +10,6 @@ public class Technician extends Provider {
         this.ratePerVisit = ratePerVisit;
     }
 
-    public int getRatePerVisit() {
-        return ratePerVisit;
-    }
-
     public void setRatePerVisit(int ratePerVisit) {
         this.ratePerVisit = ratePerVisit;
     }
@@ -30,7 +26,7 @@ public class Technician extends Provider {
 
             int profileComparison = this.getProfile().compareTo(technician.getProfile());
             if (profileComparison == 0) {
-                return Integer.compare(this.ratePerVisit, technician.getRatePerVisit());
+                return Integer.compare(this.ratePerVisit, technician.rate());
             }
             return profileComparison;
         }
@@ -43,7 +39,7 @@ public class Technician extends Provider {
             Technician technician = (Technician) object;
             return this.getProfile().equals(technician.getProfile()) &&
                     this.getLocation().equals(technician.getLocation()) &&
-                    this.ratePerVisit == technician.getRatePerVisit();
+                    this.ratePerVisit == technician.rate();
         }
         return false;
     }
