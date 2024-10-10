@@ -1,7 +1,5 @@
+import java.io.File;
 import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 public class ClinicManager {
     List <Appointment> appts = new List <Appointment>();
@@ -90,10 +88,18 @@ public class ClinicManager {
     }
 
     public void loadProviders() {
-        String file = "providers.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
+        String fileName = "providers.txt";
+        File file = new File(fileName);
+
+        if (!file.exists()) {
+            System.out.println("File not found: " + fileName);
+            return;
+        }
+
+        try {
+            Scanner scanner = new Scanner(file);  // Using Scanner to read the file
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
                 // Split the line into individual fields
                 String[] splittedLine = line.split("  ");
                 // Use .equals() to compare strings, not ==
@@ -111,7 +117,8 @@ public class ClinicManager {
                     technicians.addTechnician(technician);
                 }
             }
-        } catch (IOException e) {
+            scanner.close();  // Don't forget to close the Scanner
+        } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("Providers loaded to the list.");
@@ -171,7 +178,7 @@ public class ClinicManager {
             return;
         }
         Date dob = stringToDate(input[5]);
-        if (!dob.isValidDate()) {
+        if (!dob.isValidDate()) { // FIX THIS - it could be null because of the checkDate method!!!
             System.out.println("Patient dob: " + input[5] + " is not a valid calendar date.");
             return;
         }
@@ -249,7 +256,7 @@ public class ClinicManager {
 
         // [PATEL, BRIDGEWATER, Somerset 08807, FAMILY] is not available at slot 1.
         if (appts.timeslotTaken(provider, timeslot2) != -1) {
-            System.out.println(provider.toString() + " is not available at slot " + timeslot2);            return;
+            System.out.println(provider.toString() + " is not available at slot " + input[2]);            return;
         }
 
         appts.get(apptIndex).setTimeslot(timeslot2);
