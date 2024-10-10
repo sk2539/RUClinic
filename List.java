@@ -16,7 +16,7 @@ public class List<E> implements Iterable<E> {
                 return i;
             }
         }
-        return -1;
+        return NOT_FOUND;
     }
 
     private void grow() {
@@ -119,11 +119,24 @@ public class List<E> implements Iterable<E> {
         }
         return NOT_FOUND;
     }
+    public int identifyAppointment(Profile profile, Date date, Timeslot timeslot) {
+        for (int i =0; i<size; i++) {
+            if (objects[i] instanceof Appointment) {
+                if (((Appointment) objects[i]).getProfile().equals(profile)) {
+                    if (((Appointment) objects[i]).getDate().equals(date)) {
+                        if (((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
+                            return i;
+                        }
+                    }
+                }
+            }
+        }
+        return NOT_FOUND;
+    }
 
     public int timeslotTaken(Provider provider, Timeslot timeslot) {
         for (int i = 0; i < size; i++) {
             if(objects[i] instanceof Appointment) {
-
                 if (((Appointment) objects[i]).getProvider().equals(provider) && ((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
                     return i;
                 }
