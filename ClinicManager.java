@@ -163,6 +163,32 @@ public class ClinicManager {
         return null;
     }
 
+    public void scheduleImaging(String[] input)
+    {
+        //T,9/30/2024,1,John,Doe,12/13/1989,xray
+        Timeslot timeslot = new Timeslot();
+
+        timeslot.setTimeslot(input[2]);
+        if(!timeslot.setTimeslot(input[2]))
+        {
+            System.out.println(input[2] + "is not a valid time slot.");
+            return;
+        }
+        Date apptDate = stringToDate(input[1]);
+        if(!checkDate(input[1]))
+        {
+            return;
+        }
+        Date dob = stringToDate(input[5]);
+        if(!checkDate(input[5]))
+        {
+            return;
+        }
+        Profile profile = new Profile(input[3], input[4], dob);
+        Person patient = new Person(profile);
+
+
+    }
     public void scheduleDocAppt(String [] input) {
         Timeslot slot = new Timeslot();
         slot.setTimeslot(input[2]);

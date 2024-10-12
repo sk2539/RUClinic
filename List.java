@@ -154,11 +154,11 @@ public class List<E> implements Iterable<E> {
     //put this in a new class file
     public class ListMethods<E> extends List
     {
-        public int timeslotTakenByPatient(Provider provider, Timeslot timeslot, Profile patient) {
+        public int timeslotTakenByPatient(Person profile, Date date, Timeslot timeslot) {
             for (int i = 0; i<size; i++) {
                 if(objects[i] instanceof Appointment)
                 {
-                    if (((Appointment) objects[i]).getProvider().equals(provider) && ((Appointment) objects[i]).getTimeslot().equals(timeslot) && ((Appointment) objects[i]).getProfile().equals(patient)) {
+                    if (((Appointment) objects[i]).getProfile().equals(profile) && ((Appointment) objects[i]).getTimeslot().equals(timeslot) && ((Appointment) objects[i]).getDate().equals(date)) {
                         return i;
                     }
                 }
