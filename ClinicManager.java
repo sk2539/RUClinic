@@ -83,6 +83,8 @@ public class ClinicManager {
             }
             else {
                 System.out.println("Missing data tokens.");
+                input = in.nextLine();
+                splittedInput = input.split(",");
             }
         }
     }
@@ -173,7 +175,7 @@ public class ClinicManager {
     public void scheduleImaging(String[] input)
     {
         //T,9/30/2024,1,John,Doe,12/13/1989,xray
-        if(!checkDate(input[1])) {
+        if(!checkApptDate(input[1])) {
             return;
         }
         Timeslot timeslot = new Timeslot();
@@ -183,8 +185,7 @@ public class ClinicManager {
             return;
         }
         Date dob = stringToDate(input[5]);
-        if(!dob.isValidDate()){
-            System.out.println("Patient dob: " + input[5] + " is not a valid calendar date.");
+        if(!checkDOB(dob)){
             return;
         }
         Profile profile = new Profile(input[3], input[4], dob);
@@ -195,7 +196,7 @@ public class ClinicManager {
     //Bc it was at the end, the code was checking the providers first before the date.
     //So I added it to the beginning and i checked if it was false, and if it was false i created a return statement.
     public void scheduleDocAppt(String [] input) {
-        if (!checkDate(input[1])) {
+        if (!checkApptDate(input[1])) {
             return;
         }
         Timeslot slot = new Timeslot();
@@ -205,8 +206,7 @@ public class ClinicManager {
             return;
         }
         Date dob = stringToDate(input[5]);
-        if (!dob.isValidDate()) { // FIX THIS - it could be null because of the checkDate method!!!
-            System.out.println("Patient dob: " + input[5] + " is not a valid calendar date.");
+        if (!checkDOB(dob)) { // FIX THIS - it could be null because of the checkDate method!!!
             return;
         }
         Profile profile = new Profile(input[3], input[4], stringToDate(input[5]));
@@ -291,10 +291,25 @@ public class ClinicManager {
         System.out.println("Rescheduled to " + input[1] + " " + timeslot2.toString() + " " + firstName + " " + lastName + " " + dob.toString());
     }
 
+    public boolean checkDOB(Date dob)
+    {
+        if(!dob.isValidDate()) {
+            System.out.println("Patient dob: " + dob.toString() + " is not a valid calendar date");
+            return false;
+        }
+        else if(dob.isToday() || dob.isFutureDate()) {
+            System.out.println("Patient dob: " + dob.toString() + " is today or a date after today.");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 
-public boolean checkDate(String input) {
+    public boolean checkApptDate(String input) {
         Date date = stringToDate(input);
-        if (date==null) {
+        if (!date.isValidDate()) {
+            System.out.println("Appointment date: " + input + " is not a valid calendar date");
             return false;
         }
         else if(date.isBeforeToday() || date.isToday()) {
@@ -326,8 +341,7 @@ public boolean checkDate(String input) {
 
         Date dateObject = new Date(year, month, day);
 
-        if (!dateObject.isValidDate()) {
-            System.out.println("Appointment date: " + date + " is not a valid calendar date.");
+        if (dateObject == null) {
             return null;
         }
         else {
