@@ -30,9 +30,9 @@ public class ClinicManager {
                         case "D":
                             scheduleDocAppt(splittedInput);
                             break;
-//                        case "T":
-//                            scheduleTechAppt(splittedInput);
-//                            break;
+                        case "T":
+                            scheduleImaging(splittedInput);
+                            break;
 //                        case "C":
 //                            cancel(splittedInput);
 //                            break;
@@ -173,31 +173,29 @@ public class ClinicManager {
     public void scheduleImaging(String[] input)
     {
         //T,9/30/2024,1,John,Doe,12/13/1989,xray
+        if(!checkDate(input[1])) {
+            return;
+        }
         Timeslot timeslot = new Timeslot();
-
         timeslot.setTimeslot(input[2]);
-        if(!timeslot.setTimeslot(input[2]))
-        {
+        if(!timeslot.setTimeslot(input[2])) {
             System.out.println(input[2] + "is not a valid time slot.");
             return;
         }
-        Date apptDate = stringToDate(input[1]);
-        if(!checkDate(input[1]))
-        {
-            return;
-        }
         Date dob = stringToDate(input[5]);
-        if(!checkDate(input[5]))
-        {
+        if(!dob.isValidDate()){
+            System.out.println("Patient dob: " + input[5] + " is not a valid calendar date.");
             return;
         }
         Profile profile = new Profile(input[3], input[4], dob);
         Person patient = new Person(profile);
-
-
     }
+
     public void scheduleDocAppt(String [] input) {
         Timeslot slot = new Timeslot();
+        if (!checkDate(input[1])) { //2/28/2025 9:00 AM John Doe 12/13/1989 [ANDREW PATEL 1/21/1989, BRIDGEWATER, Somerset 08807][FAMILY, #01] booked.
+            return;
+        }
         slot.setTimeslot(input[2]);
         if (!slot.setTimeslot(input[2])) {
             System.out.println(input[2] + " is not a valid time slot.");
@@ -221,9 +219,7 @@ public class ClinicManager {
             System.out.println(appts.get(appts.timeslotTaken(doctor, slot)).getProfile().toString() + " has an existing appointment at the same timeslot.");
             return;
         }
-        if (checkDate(input[1])) { //2/28/2025 9:00 AM John Doe 12/13/1989 [ANDREW PATEL 1/21/1989, BRIDGEWATER, Somerset 08807][FAMILY, #01] booked.
-            System.out.println(doctor.toString());
-        }
+        System.out.println(doctor.toString());
     }
 
     // given: Appointment date, timeslot, first name, last name, date of birth (date, timeslot and profile)
