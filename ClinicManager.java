@@ -178,6 +178,7 @@ public class ClinicManager {
         if(!checkApptDate(input[1])) {
             return;
         }
+        Date apptDate = stringToDate(input[1]);
         Timeslot timeslot = new Timeslot();
         timeslot.setTimeslot(input[2]);
         if(!timeslot.setTimeslot(input[2])) {
@@ -189,7 +190,20 @@ public class ClinicManager {
             return;
         }
         Profile profile = new Profile(input[3], input[4], dob);
-        Person patient = new Person(profile);
+        Person patient = new Person();
+        int index = appts.identifyAppointment(profile, apptDate, timeslot);
+        if (index != -1) {
+            System.out.println(appts.get(index).patient.getProfile().toString() + " has an existing appointment at the same timeslot.");
+            return;
+        }
+        if(!isValidImaging(input[6]))
+        {
+            System.out.println(input[6] + " - imaging service not provided");
+            return;
+        }
+        //call techAvailable() here
+
+
     }
 
     public void scheduleDocAppt(String [] input) {
@@ -344,5 +358,20 @@ public class ClinicManager {
         else {
             return dateObject;
         }
+    }
+
+    public boolean isValidImaging(String input)
+    {
+        input.toLowerCase();
+        if(input.equals("xray") || input.equals("catscan") || input.equals("ultrasound"))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean techAvailable()
+    {
+        return false;
     }
 }
