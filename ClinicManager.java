@@ -1,7 +1,5 @@
+import java.io.File;
 import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 public class ClinicManager {
     List <Appointment> appts = new List <Appointment>();
@@ -90,10 +88,18 @@ public class ClinicManager {
     }
 
     public void loadProviders() {
-        String file = "providers.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
+        String fileName = "providers.txt";
+        File file = new File(fileName);
+
+        if (!file.exists()) {
+            System.out.println("File not found: " + fileName);
+            return;
+        }
+
+        try {
+            Scanner scanner = new Scanner(file);  // Using Scanner to read the file
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
                 // Split the line into individual fields
                 String[] splittedLine = line.split("  ");
                 // Use .equals() to compare strings, not ==
@@ -111,7 +117,8 @@ public class ClinicManager {
                     technicians.addTechnician(technician);
                 }
             }
-        } catch (IOException e) {
+            scanner.close();  // Don't forget to close the Scanner
+        } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("Providers loaded to the list.");
@@ -197,7 +204,7 @@ public class ClinicManager {
             return;
         }
         Date dob = stringToDate(input[5]);
-        if (!dob.isValidDate()) {
+        if (!dob.isValidDate()) { // FIX THIS - it could be null because of the checkDate method!!!
             System.out.println("Patient dob: " + input[5] + " is not a valid calendar date.");
             return;
         }
@@ -219,7 +226,73 @@ public class ClinicManager {
         }
     }
 
-    public boolean checkDate(String input) {
+    // given: Appointment date, timeslot, first name, last name, date of birth (date, timeslot and profile)
+    public void cancel(String [] input) {
+        if (input.length < 7) {
+            System.out.println("Missing data tokens.");
+            return;
+        }
+        Date date = stringToDate(input[1]);
+        Timeslot slot = new Timeslot();
+        if (!slot.setTimeslot(input[2])) {
+            System.out.println(input[2] + " is not a valid time slot.");
+            return;
+        }
+        Profile profile = new Profile(input[3], input[4], stringToDate(input[5]));
+        int inptApp = appts.identifyAppointment(profile, date, slot);
+        if (inptApp!=-1)
+        {
+            Appointment currApp = appts.get(inptApp);
+            Appointment appointment = new Appointment(currApp.getDate(), currApp.getTimeslot(), currApp.getProfile(), currApp.getProvider());
+            appts.remove(appointment);
+            System.out.println(date.toString() + " " + slot.toString() + " " + profile.toString() + " has been canceled.");
+            return;
+        }
+        System.out.println(date.toString() + " " + slot.toString() + " " + profile.toString() + " does not exist.");
+    }
+
+    // Reschedule an appointment given: Date, Timeslot1, First name, Last name, DOB, Timeslot2
+    public void reschedule(String[] input) {
+        if (input.length < 8) {
+            System.out.println("Missing data tokens.");
+            return;
+        }
+        Date date = stringToDate(input[1]);
+        Timeslot timeslot1 = new Timeslot();
+        timeslot1.setTimeslot(input[2]);
+        Timeslot timeslot2 = new Timeslot();
+        timeslot2.setTimeslot(input[6]);
+        if (!timeslot2.setTimeslot(input[6])) {
+            System.out.println(input[6] + " is not a valid timeslot.");
+        }
+        String firstName = input[3];
+        String lastName = input[4];
+        Date dob = stringToDate(input[5]);
+        Profile profile = new Profile(firstName, lastName, dob);
+
+        int apptIndex = appts.identifyAppointment(profile, date, timeslot1);
+
+        if (apptIndex == -1) {
+            System.out.println(input[1] + " " + timeslot1.toString() + " " + firstName + " " + lastName + " " + dob.toString() + " does not exist.");
+            return;
+        }
+
+        Appointment appointment = appts.get(apptIndex);
+        Provider provider = (Provider) appointment.getProvider();
+
+        // [PATEL, BRIDGEWATER, Somerset 08807, FAMILY] is not available at slot 1.
+        if (appts.timeslotTaken(provider, timeslot2) != -1) {
+            System.out.println(provider.toString() + " is not available at slot " + input[2]);            return;
+        }
+
+        appts.get(apptIndex).setTimeslot(timeslot2);
+        Appointment appointmentFinal = appts.get(apptIndex);
+
+        System.out.println("Rescheduled to " + input[1] + " " + timeslot2.toString() + " " + firstName + " " + lastName + " " + dob.toString());
+    }
+
+
+public boolean checkDate(String input) {
         Date date = stringToDate(input);
         if (date==null) {
             return false;

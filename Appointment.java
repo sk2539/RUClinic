@@ -155,8 +155,7 @@ public class Appointment implements Comparable <Appointment> {
                 return this.patient;
         }
 
-        public Person getProvider()
-        {
-                return this.provider;
+        public Person getProvider() {
+                return (Provider) this.provider;
         }
 }
