@@ -192,9 +192,6 @@ public class ClinicManager {
         Person patient = new Person(profile);
     }
 
-    //The thing that I changed was to check if the date is invalid in the beginning.
-    //Bc it was at the end, the code was checking the providers first before the date.
-    //So I added it to the beginning and i checked if it was false, and if it was false i created a return statement.
     public void scheduleDocAppt(String [] input) {
         if (!checkApptDate(input[1])) {
             return;
@@ -206,7 +203,7 @@ public class ClinicManager {
             return;
         }
         Date dob = stringToDate(input[5]);
-        if (!checkDOB(dob)) { // FIX THIS - it could be null because of the checkDate method!!!
+        if (!checkDOB(dob)) {
             return;
         }
         Profile profile = new Profile(input[3], input[4], stringToDate(input[5]));
