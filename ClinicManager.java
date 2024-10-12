@@ -179,7 +179,7 @@ public class ClinicManager {
         Timeslot timeslot = new Timeslot();
         timeslot.setTimeslot(input[2]);
         if(!timeslot.setTimeslot(input[2])) {
-            System.out.println(input[2] + "is not a valid time slot.");
+            System.out.println(input[2] + " is not a valid time slot.");
             return;
         }
         Date dob = stringToDate(input[5]);
@@ -191,11 +191,14 @@ public class ClinicManager {
         Person patient = new Person(profile);
     }
 
+    //The thing that I changed was to check if the date is invalid in the beginning.
+    //Bc it was at the end, the code was checking the providers first before the date.
+    //So I added it to the beginning and i checked if it was false, and if it was false i created a return statement.
     public void scheduleDocAppt(String [] input) {
-        Timeslot slot = new Timeslot();
-        if (!checkDate(input[1])) { //2/28/2025 9:00 AM John Doe 12/13/1989 [ANDREW PATEL 1/21/1989, BRIDGEWATER, Somerset 08807][FAMILY, #01] booked.
+        if (!checkDate(input[1])) {
             return;
         }
+        Timeslot slot = new Timeslot();
         slot.setTimeslot(input[2]);
         if (!slot.setTimeslot(input[2])) {
             System.out.println(input[2] + " is not a valid time slot.");
@@ -219,6 +222,7 @@ public class ClinicManager {
             System.out.println(appts.get(appts.timeslotTaken(doctor, slot)).getProfile().toString() + " has an existing appointment at the same timeslot.");
             return;
         }
+        //2/28/2025 9:00 AM John Doe 12/13/1989 [ANDREW PATEL 1/21/1989, BRIDGEWATER, Somerset 08807][FAMILY, #01] booked.
         System.out.println(doctor.toString());
     }
 
