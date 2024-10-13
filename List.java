@@ -134,6 +134,22 @@ public class List<E> implements Iterable<E> {
         return NOT_FOUND;
     }
 
+    public int identifyImagingAppt(Technician tech, Date date, Timeslot timeslot)
+    {
+        for (int i =0; i<size; i++) {
+            if (objects[i] instanceof Appointment) {
+                if (((Appointment) objects[i]).getProfile().equals(tech.getProfile())) {
+                    if (((Appointment) objects[i]).getDate().equals(date)) {
+                        if (((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
+                            return i;
+                        }
+                    }
+                }
+            }
+        }
+        return NOT_FOUND;
+    }
+
     public int timeslotTaken(Provider provider, Timeslot timeslot) {
         for (int i = 0; i < size; i++) {
             if(objects[i] instanceof Appointment) {

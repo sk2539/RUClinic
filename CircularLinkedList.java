@@ -2,7 +2,7 @@ public class CircularLinkedList {
     private Node head;
     private Node tail;
 
-    private class Node {
+    public class Node {
         Technician technician;
         Node next;
 
@@ -17,16 +17,33 @@ public class CircularLinkedList {
         this.tail = null;
     }
 
+    public void setHead(Node head){
+        this.head = head;
+    }
+
+    public void setTail(Node tail){
+        this.tail = tail;
+    }
+
+    public Node getHead(){
+        return this.head;
+    }
+
+    public Node getTail() {
+        return this.tail;
+    }
+
     public void addTechnician(Technician technician) {
         Node newNode = new Node(technician);
+
         if (head == null) {
             head = newNode;
             tail = newNode;
-            tail.next = head;
+            newNode.next = head;
         } else {
+            tail.next = newNode;
             newNode.next = head;
             head = newNode;
-            tail.next = head;
         }
     }
 

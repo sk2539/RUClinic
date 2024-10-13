@@ -174,6 +174,7 @@ public class ClinicManager {
 
     public void scheduleImaging(String[] input)
     {
+        List<Appointment> scheduledImgAppt = new List<Appointment>();
         //T,9/30/2024,1,John,Doe,12/13/1989,xray
         if(!checkApptDate(input[1])) {
             return;
@@ -190,20 +191,26 @@ public class ClinicManager {
             return;
         }
         Profile profile = new Profile(input[3], input[4], dob);
-        Person patient = new Person();
+        Person patient = new Person(profile);
         int index = appts.identifyAppointment(profile, apptDate, timeslot);
         if (index != -1) {
             System.out.println(appts.get(index).patient.getProfile().toString() + " has an existing appointment at the same timeslot.");
             return;
         }
-        if(!isValidImaging(input[6]))
-        {
+        if(!isValidImaging(input[6])) {
             System.out.println(input[6] + " - imaging service not provided");
             return;
         }
-        //call techAvailable() here
-
-
+        Radiology room = setRadioRoom(input[6]);
+        if(techAvailable(apptDate, timeslot) == null) {
+            System.out.println("No technician available");
+            return;
+        }
+        Person technician = techAvailable(apptDate, timeslot);
+        Appointment newAppt = new Appointment(apptDate, timeslot, patient, technician);
+        appts.add(newAppt);
+        scheduledImgAppt.add(newAppt);
+        System.out.println(newAppt.toString() + " created imging appt");
     }
 
     public void scheduleDocAppt(String [] input) {
@@ -235,6 +242,7 @@ public class ClinicManager {
         }
         //2/28/2025 9:00 AM John Doe 12/13/1989 [ANDREW PATEL 1/21/1989, BRIDGEWATER, Somerset 08807][FAMILY, #01] booked.
         System.out.println(doctor.toString());
+
     }
 
     // given: Appointment date, timeslot, first name, last name, date of birth (date, timeslot and profile)
@@ -262,9 +270,9 @@ public class ClinicManager {
         System.out.println(date.toString() + " " + slot.toString() + " " + profile.toString() + " does not exist.");
     }
 
-    // Reschedule an appointment given: Date, Timeslot1, First name, Last name, DOB, Timeslot2
+    // Reschedule an appointment given: R, Date, Timeslot1, First name, Last name, DOB, Timeslot2
     public void reschedule(String[] input) {
-        if (input.length < 8) {
+        if (input.length < 7) {
             System.out.println("Missing data tokens.");
             return;
         }
@@ -275,6 +283,7 @@ public class ClinicManager {
         timeslot2.setTimeslot(input[6]);
         if (!timeslot2.setTimeslot(input[6])) {
             System.out.println(input[6] + " is not a valid timeslot.");
+            return;
         }
         String firstName = input[3];
         String lastName = input[4];
@@ -288,18 +297,26 @@ public class ClinicManager {
             return;
         }
 
+        int apptIndex2 = appts.identifyAppointment(profile, date, timeslot2);
+        if (apptIndex2 !=-1) {
+            Appointment appointment = appts.get(apptIndex2);
+            System.out.println(profile.toString() + " has an existing appointment at " + appointment.getDate().toString() + " " + timeslot2.toString());
+            return;
+        }
+
         Appointment appointment = appts.get(apptIndex);
         Provider provider = (Provider) appointment.getProvider();
 
         // [PATEL, BRIDGEWATER, Somerset 08807, FAMILY] is not available at slot 1.
         if (appts.timeslotTaken(provider, timeslot2) != -1) {
-            System.out.println(provider.toString() + " is not available at slot " + input[2]);            return;
+            System.out.println(provider.toString() + " is not available at slot " + input[2]);
+            return;
         }
 
-        appts.get(apptIndex).setTimeslot(timeslot2);
-        Appointment appointmentFinal = appts.get(apptIndex);
+        Appointment newAppt = appts.get(apptIndex);
+        newAppt.setTimeslot(timeslot2);
 
-        System.out.println("Rescheduled to " + input[1] + " " + timeslot2.toString() + " " + firstName + " " + lastName + " " + dob.toString());
+        System.out.println("Rescheduled to " + input[1] + " " + timeslot2.toString() + " " + firstName + " " + lastName + " " + dob.toString() + " " + newAppt.getProvider().toString());
     }
 
     public boolean checkDOB(Date dob)
@@ -360,8 +377,7 @@ public class ClinicManager {
         }
     }
 
-    public boolean isValidImaging(String input)
-    {
+    public boolean isValidImaging(String input) {
         input.toLowerCase();
         if(input.equals("xray") || input.equals("catscan") || input.equals("ultrasound"))
         {
@@ -370,8 +386,38 @@ public class ClinicManager {
         return false;
     }
 
-    public boolean techAvailable()
-    {
-        return false;
+    public Radiology setRadioRoom(String input) {
+        input.toLowerCase();
+        if(input.equals("xray")) {
+            return Radiology.XRAY;
+        }
+        else if(input.equals("catscan")) {
+            return Radiology.CATSCAN;
+        }
+        else if(input.equals("ultrasound")) {
+            return Radiology.ULTRASOUND;
+        }
+        return null;
+    }
+
+    public Technician techAvailable(Date date, Timeslot timeslot) {
+        //iterate through circular linked list and check if any provider is available
+        //not available means that the technician, date, and timeslot are the same as an appt in the appts list
+        CircularLinkedList.Node head = technicians.getHead();
+        CircularLinkedList.Node curr = technicians.getHead();
+        do{
+            Technician currentTech = curr.technician;
+            Date requestedDate;
+            Timeslot requestedTimeslot;
+            //the provider is not available
+            if(appts.identifyImagingAppt(currentTech, date, timeslot) != -1) {
+                curr = curr.next;
+            }
+            else {
+                return currentTech;
+            }
+        }while(head != curr);
+
+        return null;
     }
 }
