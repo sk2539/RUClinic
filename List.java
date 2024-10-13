@@ -134,20 +134,34 @@ public class List<E> implements Iterable<E> {
         return NOT_FOUND;
     }
 
-    public int identifyImagingAppt(Technician tech, Date date, Timeslot timeslot)
-    {
-        for (int i =0; i<size; i++) {
-            if (objects[i] instanceof Appointment) {
-                if (((Appointment) objects[i]).getProfile().equals(tech.getProfile())) {
-                    if (((Appointment) objects[i]).getDate().equals(date)) {
-                        if (((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
-                            return i;
-                        }
-                    }
+    public boolean identifyImagingAppt(Technician tech, Date date, Timeslot timeslot) {
+        for (int i = 0; i < size; i++) {
+            if (objects[i] instanceof Imaging) {
+                Imaging imaging = (Imaging) objects[i];
+                if (imaging.getProvider().equals(tech) &&
+                        imaging.getDate().equals(date) &&
+                        imaging.getTimeslot().equals(timeslot)) {
+                    return false; // Technician is NOT available (appointment found)
                 }
             }
         }
-        return NOT_FOUND;
+        return true; // Technician is available (no conflicting appointment found)
+    }
+
+    public boolean isRoomFree(Technician tech, Date date, Timeslot timeslot, Radiology room) {
+        Location location = tech.getLocation();
+        for (int i = 0; i < size; i++) {
+            if (objects[i] instanceof Imaging) {
+                Imaging imaging = (Imaging) objects[i];
+                if (imaging.getProvider().getLocation().equals(location) &&
+                        imaging.getDate().equals(date) &&
+                        imaging.getTimeslot().equals(timeslot) &&
+                        imaging.getRoom().equals(room)) {
+                    return false; // Room is NOT free
+                }
+            }
+        }
+        return true; // Room is free
     }
 
     public int timeslotTaken(Provider provider, Timeslot timeslot) {

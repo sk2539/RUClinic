@@ -174,7 +174,7 @@ public class ClinicManager {
 
     public void scheduleImaging(String[] input)
     {
-        List<Appointment> scheduledImgAppt = new List<Appointment>();
+        List<Appointment> imagingAppts = new List<Appointment>();
         //T,9/30/2024,1,John,Doe,12/13/1989,xray
         if(!checkApptDate(input[1])) {
             return;
@@ -202,15 +202,25 @@ public class ClinicManager {
             return;
         }
         Radiology room = setRadioRoom(input[6]);
-        if(techAvailable(apptDate, timeslot) == null) {
+        if(techAvailable(imagingAppts, apptDate, timeslot, room) == null) {
             System.out.println("No technician available");
             return;
         }
-        Person technician = techAvailable(apptDate, timeslot);
-        Appointment newAppt = new Appointment(apptDate, timeslot, patient, technician);
-        appts.add(newAppt);
-        scheduledImgAppt.add(newAppt);
-        System.out.println(newAppt.toString() + " created imging appt");
+        Technician technician;
+        if(imagingAppts.size() == 0)
+        {
+            technician = technicians.getHead().technician;
+            Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician);
+            appts.add(newImageAppt);
+            imagingAppts.add(newImageAppt);
+            System.out.println(newImageAppt.toString() + " created imaging appt");
+            return;
+        }
+        technician = techAvailable(imagingAppts, apptDate, timeslot, room);
+        Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician);
+        appts.add(newImageAppt);
+        imagingAppts.add(newImageAppt);
+        System.out.println(newImageAppt.toString() + " created imaging appt");
     }
 
     public void scheduleDocAppt(String [] input) {
@@ -400,24 +410,28 @@ public class ClinicManager {
         return null;
     }
 
-    public Technician techAvailable(Date date, Timeslot timeslot) {
-        //iterate through circular linked list and check if any provider is available
-        //not available means that the technician, date, and timeslot are the same as an appt in the appts list
-        CircularLinkedList.Node head = technicians.getHead();
-        CircularLinkedList.Node curr = technicians.getHead();
-        do{
-            Technician currentTech = curr.technician;
-            Date requestedDate;
-            Timeslot requestedTimeslot;
-            //the provider is not available
-            if(appts.identifyImagingAppt(currentTech, date, timeslot) != -1) {
-                curr = curr.next;
-            }
-            else {
-                return currentTech;
-            }
-        }while(head != curr);
+    public Technician techAvailable(List<Appointment> imaging, Date date, Timeslot timeslot, Radiology room) {
+        if (technicians.getHead() == null) {
+            return null; // Handle empty list case
+        }
 
-        return null;
+        CircularLinkedList.Node start = technicians.getHead();
+        CircularLinkedList.Node current = start;
+        Technician returnTech = null;
+
+        do {
+            Technician tech = current.technician;
+            boolean techAvailable = imaging.identifyImagingAppt(tech, date, timeslot);
+            boolean roomFree = imaging.isRoomFree(tech, date, timeslot, room);
+
+            if (techAvailable && roomFree) {
+                returnTech = tech;
+                technicians.setHead(current.next);
+                return returnTech;
+            }
+            current = current.next;
+        } while (current != start);
+
+        return null; // No available technician found
     }
 }

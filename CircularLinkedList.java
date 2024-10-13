@@ -19,6 +19,9 @@ public class CircularLinkedList {
 
     public void setHead(Node head){
         this.head = head;
+        if(tail != null){
+            this.tail.next = this.head;
+        }
     }
 
     public void setTail(Node tail){
