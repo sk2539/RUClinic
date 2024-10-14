@@ -75,8 +75,8 @@ public class Profile implements Comparable<Profile> {
     public boolean equals(Object patientProfile) {
         if (patientProfile instanceof Profile) {
             Profile profile = (Profile) patientProfile;
-            return (profile.fname.equals(this.fname)
-                    && profile.lname.equals(this.lname)
+            return (profile.fname.equalsIgnoreCase(this.fname)
+                    && profile.lname.equalsIgnoreCase(this.lname)
                     && profile.dob.equals(this.dob));
         }
         return false;

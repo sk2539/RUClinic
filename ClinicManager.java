@@ -26,8 +26,8 @@ public class ClinicManager {
                 System.out.println("Scheduler terminated.");
                 return;
             }
-            if (splittedInput.length == 7 || splittedInput.length==1) {
-                if (splittedInput.length > 0 && !splittedInput[0].isEmpty()) {
+            if (splittedInput.length == 7 || splittedInput.length==1 || splittedInput.length == 6 ) {
+                if (!splittedInput[0].isEmpty()) {
                     String command = splittedInput[0];
                     switch (command) {
                         case "D":
@@ -37,6 +37,10 @@ public class ClinicManager {
                             scheduleImaging(splittedInput);
                             break;
                         case "C":
+                            if(splittedInput.length==1){
+                                System.out.println("Missing Data Tokens");
+                                break;
+                            }
                             cancel(splittedInput);
                             break;
                         case "R":
@@ -147,7 +151,7 @@ public class ClinicManager {
         else if (input.equals("PEDIATRICIAN")) {
             return Specialty.Pediatrician;
         }
-        else if (input.equals("PRINCETON")) {
+        else if (input.equals("ALLERGIST")) {
             return Specialty.Allergist;
         }
         return null;
@@ -207,13 +211,13 @@ public class ClinicManager {
         }
         Technician technician;
         technician = techAvailable(appts, apptDate, timeslot, room);
-        Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician);
+        Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician, room);
         int index = appts.identifyImagingAppt(technician, apptDate, timeslot);
+        System.out.println(index);
         if (appts.indexOf(newImageAppt) != -1) {
             System.out.println(appts.get(appts.indexOf(newImageAppt)).patient.getProfile().toString() + " has an existing appointment at the same timeslot.");
             return;
         }
-        newImageAppt.setRoom(room);
         appts.add(newImageAppt);
         imagingAppts.add(newImageAppt);
         System.out.println(newImageAppt.toString() + " created imaging appt");
@@ -242,8 +246,8 @@ public class ClinicManager {
             return;
         }
         Doctor doctor = (Doctor) providers.get(matchingDoctorIndex);
-        if (appts.timeslotTaken(doctor, slot) != -1) {
-            System.out.println(appts.get(appts.timeslotTaken(doctor, slot)).getProfile().toString() + " has an existing appointment at the same timeslot.");
+        if (appts.timeslotTaken(doctor, slot, date) != -1) {
+            System.out.println(appts.get(appts.timeslotTaken(doctor, slot, date)).getProfile().toString() + " has an existing appointment at the same timeslot.");
             return;
         }
         Appointment newAppt = new Appointment(date, slot, patient, doctor);
@@ -253,7 +257,7 @@ public class ClinicManager {
 
     // given: Appointment date, timeslot, first name, last name, date of birth (date, timeslot and profile)
     public void cancel(String [] input) {
-        if (input.length < 7) {
+        if (input.length < 6) {
             System.out.println("Missing data tokens.");
             return;
         }
@@ -314,7 +318,7 @@ public class ClinicManager {
         Provider provider = (Provider) appointment.getProvider();
 
         // [PATEL, BRIDGEWATER, Somerset 08807, FAMILY] is not available at slot 1.
-        if (appts.timeslotTaken(provider, timeslot2) != -1) {
+        if (appts.timeslotTaken(provider, timeslot2, date) != -1) {
             System.out.println(provider.toString() + " is not available at slot " + input[2]);
             return;
         }
@@ -407,12 +411,20 @@ public class ClinicManager {
     }
 
     public Technician techAvailable(List<Appointment> imaging, Date date, Timeslot timeslot, Radiology room) {
-        if (technicians.getHead() == null) {
-            return null; // Handle empty list case
+//        if (technicians.getHead() == null) {
+//            return null; // Handle empty list case
+//        }
+        boolean isFirstFree = true;
+        for(int i = 0; i<appts.size(); i++){
+            if(appts.get(i) instanceof Imaging){
+                isFirstFree = false;
+            }
+        }
+        if(isFirstFree){
+            return pointer.technician;
         }
 
-        Node start = technicians.getHead();
-
+        Node start = pointer;
         do {
             Technician tech = pointer.technician;
             int techAvailable = imaging.identifyImagingAppt(tech, date, timeslot);

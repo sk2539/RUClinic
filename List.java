@@ -162,10 +162,10 @@ public class List<E> implements Iterable<E> {
         return true; // Room is free
     }
 
-    public int timeslotTaken(Provider provider, Timeslot timeslot) {
+    public int timeslotTaken(Provider provider, Timeslot timeslot, Date date) {
         for (int i = 0; i < size; i++) {
             if(objects[i] instanceof Appointment) {
-                if (((Appointment) objects[i]).getProvider().equals(provider) && ((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
+                if (((Appointment) objects[i]).getProvider().equals(provider) && ((Appointment) objects[i]).getDate().equals(date) && ((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
                     return i;
                 }
             }
