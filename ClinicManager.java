@@ -36,12 +36,12 @@ public class ClinicManager {
                         case "T":
                             scheduleImaging(splittedInput);
                             break;
-//                        case "C":
-//                            cancel(splittedInput);
-//                            break;
-//                        case "R":
-//                            reschedule(splittedInput);
-//                            break;
+                        case "C":
+                            cancel(splittedInput);
+                            break;
+                        case "R":
+                            reschedule(splittedInput);
+                            break;
 //                        case "PA":
 //                            if (appts.size() == 0) {
 //                                System.out.println("The schedule calendar is empty.");

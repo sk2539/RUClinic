@@ -120,7 +120,7 @@ public class List<E> implements Iterable<E> {
     public int identifyAppointment(Profile profile, Date date, Timeslot timeslot) {
         for (int i =0; i<size; i++) {
             if (objects[i] instanceof Appointment) {
-                if (((Appointment) objects[i]).getProfile().equals(profile)) {
+                if (((Appointment) objects[i]).getProfile().getProfile().equals(profile)) {
                     if (((Appointment) objects[i]).getDate().equals(date)) {
                         if (((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
                             return i;
