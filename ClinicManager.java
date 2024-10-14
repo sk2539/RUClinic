@@ -5,6 +5,9 @@ public class ClinicManager {
     List <Appointment> appts = new List <Appointment>();
     List <Provider> providers = new List <Provider>();
     CircularLinkedList technicians = new CircularLinkedList();
+    Node pointer;
+    List<Appointment> imagingAppts = new List<Appointment>();
+
     // this class replaces Scheduler class from project1
     public void run() {
         loadProviders();
@@ -119,6 +122,7 @@ public class ClinicManager {
                     technicians.addTechnician(technician);
                 }
             }
+            pointer = technicians.getHead();
             scanner.close();  // Don't forget to close the Scanner
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,7 +178,6 @@ public class ClinicManager {
 
     public void scheduleImaging(String[] input)
     {
-        List<Appointment> imagingAppts = new List<Appointment>();
         //T,9/30/2024,1,John,Doe,12/13/1989,xray
         if(!checkApptDate(input[1])) {
             return;
@@ -192,32 +195,25 @@ public class ClinicManager {
         }
         Profile profile = new Profile(input[3], input[4], dob);
         Person patient = new Person(profile);
-        int index = appts.identifyAppointment(profile, apptDate, timeslot);
-        if (index != -1) {
-            System.out.println(appts.get(index).patient.getProfile().toString() + " has an existing appointment at the same timeslot.");
-            return;
-        }
+
         if(!isValidImaging(input[6])) {
             System.out.println(input[6] + " - imaging service not provided");
             return;
         }
         Radiology room = setRadioRoom(input[6]);
-        if(techAvailable(imagingAppts, apptDate, timeslot, room) == null) {
+        if(techAvailable(appts, apptDate, timeslot, room) == null) {
             System.out.println("No technician available");
             return;
         }
         Technician technician;
-        if(imagingAppts.size() == 0)
-        {
-            technician = technicians.getHead().technician;
-            Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician);
-            appts.add(newImageAppt);
-            imagingAppts.add(newImageAppt);
-            System.out.println(newImageAppt.toString() + " created imaging appt");
+        technician = techAvailable(appts, apptDate, timeslot, room);
+        Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician);
+        int index = appts.identifyImagingAppt(technician, apptDate, timeslot);
+        if (appts.indexOf(newImageAppt) != -1) {
+            System.out.println(appts.get(appts.indexOf(newImageAppt)).patient.getProfile().toString() + " has an existing appointment at the same timeslot.");
             return;
         }
-        technician = techAvailable(imagingAppts, apptDate, timeslot, room);
-        Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician);
+        newImageAppt.setRoom(room);
         appts.add(newImageAppt);
         imagingAppts.add(newImageAppt);
         System.out.println(newImageAppt.toString() + " created imaging appt");
@@ -227,6 +223,7 @@ public class ClinicManager {
         if (!checkApptDate(input[1])) {
             return;
         }
+        Date date = stringToDate(input[1]);
         Timeslot slot = new Timeslot();
         slot.setTimeslot(input[2]);
         if (!slot.setTimeslot(input[2])) {
@@ -238,21 +235,20 @@ public class ClinicManager {
             return;
         }
         Profile profile = new Profile(input[3], input[4], stringToDate(input[5]));
+        Person patient = new Person(profile);
         int matchingDoctorIndex = providers.getDoctorFromNPI(input[6]);
         if (matchingDoctorIndex==-1) {
             System.out.println(input[6] + " - provider doesn't exist.");
             return;
         }
         Doctor doctor = (Doctor) providers.get(matchingDoctorIndex);
-
-        // this might not work properly!!
         if (appts.timeslotTaken(doctor, slot) != -1) {
             System.out.println(appts.get(appts.timeslotTaken(doctor, slot)).getProfile().toString() + " has an existing appointment at the same timeslot.");
             return;
         }
-        //2/28/2025 9:00 AM John Doe 12/13/1989 [ANDREW PATEL 1/21/1989, BRIDGEWATER, Somerset 08807][FAMILY, #01] booked.
-        System.out.println(doctor.toString());
-
+        Appointment newAppt = new Appointment(date, slot, patient, doctor);
+        appts.add(newAppt);
+        System.out.println(input[1] + " " + slot.toString() + " " + profile.toString() + " " + doctor.toString() + " booked.");
     }
 
     // given: Appointment date, timeslot, first name, last name, date of birth (date, timeslot and profile)
@@ -415,22 +411,18 @@ public class ClinicManager {
             return null; // Handle empty list case
         }
 
-        CircularLinkedList.Node start = technicians.getHead();
-        CircularLinkedList.Node current = start;
-        Technician returnTech = null;
+        Node start = technicians.getHead();
 
         do {
-            Technician tech = current.technician;
-            boolean techAvailable = imaging.identifyImagingAppt(tech, date, timeslot);
+            Technician tech = pointer.technician;
+            int techAvailable = imaging.identifyImagingAppt(tech, date, timeslot);
             boolean roomFree = imaging.isRoomFree(tech, date, timeslot, room);
 
-            if (techAvailable && roomFree) {
-                returnTech = tech;
-                technicians.setHead(current.next);
-                return returnTech;
+            if (techAvailable == -1 && roomFree) {
+                return tech;
             }
-            current = current.next;
-        } while (current != start);
+            pointer = pointer.next;
+        } while (pointer != start);
 
         return null; // No available technician found
     }

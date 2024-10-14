@@ -2,16 +2,6 @@ public class CircularLinkedList {
     private Node head;
     private Node tail;
 
-    public class Node {
-        Technician technician;
-        Node next;
-
-        Node(Technician technician) {
-            this.technician = technician;
-            this.next = null;
-        }
-    }
-
     public CircularLinkedList() {
         this.head = null;
         this.tail = null;

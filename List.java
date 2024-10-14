@@ -43,11 +43,9 @@ public class List<E> implements Iterable<E> {
         if (e == null) {
             throw new IllegalArgumentException("Null elements are not allowed.");
         }
-
         if (size == objects.length) {
             grow();
         }
-
         if (!contains(e)) {
             objects[size] = e;
             size++;
@@ -134,18 +132,18 @@ public class List<E> implements Iterable<E> {
         return NOT_FOUND;
     }
 
-    public boolean identifyImagingAppt(Technician tech, Date date, Timeslot timeslot) {
+    public int identifyImagingAppt(Technician tech, Date date, Timeslot timeslot) {
         for (int i = 0; i < size; i++) {
             if (objects[i] instanceof Imaging) {
                 Imaging imaging = (Imaging) objects[i];
                 if (imaging.getProvider().equals(tech) &&
                         imaging.getDate().equals(date) &&
                         imaging.getTimeslot().equals(timeslot)) {
-                    return false; // Technician is NOT available (appointment found)
+                    return i; // Technician is NOT available (appointment found)
                 }
             }
         }
-        return true; // Technician is available (no conflicting appointment found)
+        return NOT_FOUND; // Technician is available (no conflicting appointment found)
     }
 
     public boolean isRoomFree(Technician tech, Date date, Timeslot timeslot, Radiology room) {
