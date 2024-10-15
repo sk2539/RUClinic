@@ -97,82 +97,6 @@ public class List<E> implements Iterable<E> {
         return find(e);
     }
 
-    public int getDoctorFromNPI(String npi) {
-        for (int i = 0; i<size; i++) {
-            if(objects[i] instanceof Doctor) {
-                if (((Doctor) objects[i]).getNPI().equals(npi)) {
-                    return i;
-                }
-            }
-        }
-        return NOT_FOUND;
-    }
-    public int getTechnicianFromRate(int rate) {
-        for (int i = 0; i<size; i++) {
-            if(objects[i] instanceof Technician) {
-                if (((Technician) objects[i]).rate()==(rate)) {
-                    return i;
-                }
-            }
-        }
-        return NOT_FOUND;
-    }
-    public int identifyAppointment(Profile profile, Date date, Timeslot timeslot) {
-        for (int i =0; i<size; i++) {
-            if (objects[i] instanceof Appointment) {
-                if (((Appointment) objects[i]).getProfile().getProfile().equals(profile)) {
-                    if (((Appointment) objects[i]).getDate().equals(date)) {
-                        if (((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
-                            return i;
-                        }
-                    }
-                }
-            }
-        }
-        return NOT_FOUND;
-    }
-
-    public int identifyImagingAppt(Technician tech, Date date, Timeslot timeslot) {
-        for (int i = 0; i < size; i++) {
-            if (objects[i] instanceof Imaging) {
-                Imaging imaging = (Imaging) objects[i];
-                if (imaging.getProvider().equals(tech) &&
-                        imaging.getDate().equals(date) &&
-                        imaging.getTimeslot().equals(timeslot)) {
-                    return i; // Technician is NOT available (appointment found)
-                }
-            }
-        }
-        return NOT_FOUND; // Technician is available (no conflicting appointment found)
-    }
-
-    public boolean isRoomFree(Technician tech, Date date, Timeslot timeslot, Radiology room) {
-        Location location = tech.getLocation();
-        for (int i = 0; i < size; i++) {
-            if (objects[i] instanceof Imaging) {
-                Imaging imaging = (Imaging) objects[i];
-                if (imaging.getProvider().getLocation().equals(location) &&
-                        imaging.getDate().equals(date) &&
-                        imaging.getTimeslot().equals(timeslot) &&
-                        imaging.getRoom().equals(room)) {
-                    return false; // Room is NOT free
-                }
-            }
-        }
-        return true; // Room is free
-    }
-
-    public int timeslotTaken(Provider provider, Timeslot timeslot, Date date) {
-        for (int i = 0; i < size; i++) {
-            if(objects[i] instanceof Appointment) {
-                if (((Appointment) objects[i]).getProvider().equals(provider) && ((Appointment) objects[i]).getDate().equals(date) && ((Appointment) objects[i]).getTimeslot().equals(timeslot)) {
-                    return i;
-                }
-            }
-        }
-        return NOT_FOUND;
-    }
-
     //figure this out
     private class ListIterator<E> implements Iterator<E> {
         int currIndex = 0;
@@ -189,34 +113,6 @@ public class List<E> implements Iterable<E> {
             E returnNext = (E) objects[currIndex];
             currIndex++;
             return returnNext;
-        }
-    }
-
-    //put this in a new class file
-    public class ListMethods<E> extends List
-    {
-        public int timeslotTakenByPatient(Person profile, Date date, Timeslot timeslot) {
-            for (int i = 0; i<size; i++) {
-                if(objects[i] instanceof Appointment)
-                {
-                    if (((Appointment) objects[i]).getProfile().equals(profile) && ((Appointment) objects[i]).getTimeslot().equals(timeslot) && ((Appointment) objects[i]).getDate().equals(date)) {
-                        return i;
-                    }
-                }
-            }
-            return NOT_FOUND;
-        }
-        public int dateExists (Date date)
-        {
-            for(int i = 0; i < size; i++)
-            {
-                if(objects[i] instanceof Appointment)
-                {
-                    if(((Appointment) objects[i]).getDate().equals(date))
-                        return i;
-                }
-            }
-            return NOT_FOUND;
         }
     }
 }
