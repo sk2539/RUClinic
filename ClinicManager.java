@@ -7,6 +7,7 @@ public class ClinicManager {
     CircularLinkedList technicians = new CircularLinkedList();
     Node pointer;
     List<Appointment> imagingAppts = new List<Appointment>();
+    ListMethods methods = new ListMethods();
 
     // this class replaces Scheduler class from project1
     public void run() {
@@ -210,7 +211,7 @@ public class ClinicManager {
         }
         Technician technician = techAvailable(appts, apptDate, timeslot, room);
         Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician, room);
-        int index = ListMethods.identifyImagingAppt(appts, technician, apptDate, timeslot);
+        int index = methods.identifyImagingAppt(appts, technician, apptDate, timeslot);
         System.out.println(index);
         if (index != -1) {
             System.out.println(appts.get(appts.indexOf(newImageAppt)).patient.getProfile().toString() + " has an existing appointment at the same timeslot.");
@@ -238,14 +239,14 @@ public class ClinicManager {
         }
         Profile profile = new Profile(input[3], input[4], stringToDate(input[5]));
         Person patient = new Person(profile);
-        int matchingDoctorIndex = ListMethods.getDoctorFromNPI(providers, input[6]);
+        int matchingDoctorIndex = methods.getDoctorFromNPI(providers, input[6]);
         if (matchingDoctorIndex==-1) {
             System.out.println(input[6] + " - provider doesn't exist.");
             return;
         }
         Doctor doctor = (Doctor) providers.get(matchingDoctorIndex);
-        if (ListMethods.timeslotTaken(appts, doctor, slot, date) != -1) {
-            System.out.println(appts.get(ListMethods.timeslotTaken(appts, doctor, slot, date)).getProfile().toString() + " has an existing appointment at the same timeslot.");
+        if (methods.timeslotTaken(appts, doctor, slot, date) != -1) {
+            System.out.println(appts.get(methods.timeslotTaken(appts, doctor, slot, date)).getProfile().toString() + " has an existing appointment at the same timeslot.");
             return;
         }
         Appointment newAppt = new Appointment(date, slot, patient, doctor);
@@ -266,7 +267,7 @@ public class ClinicManager {
             return;
         }
         Profile profile = new Profile(input[3], input[4], stringToDate(input[5]));
-        int inptApp = ListMethods.identifyAppointment(appts, profile, date, slot);
+        int inptApp = methods.identifyAppointment(appts, profile, date, slot);
         if (inptApp!=-1)
         {
             Appointment currApp = appts.get(inptApp);
@@ -298,14 +299,14 @@ public class ClinicManager {
         Date dob = stringToDate(input[5]);
         Profile profile = new Profile(firstName, lastName, dob);
 
-        int apptIndex = ListMethods.identifyAppointment(appts, profile, date, timeslot1);
+        int apptIndex = methods.identifyAppointment(appts, profile, date, timeslot1);
 
         if (apptIndex == -1) {
             System.out.println(input[1] + " " + timeslot1.toString() + " " + firstName + " " + lastName + " " + dob.toString() + " does not exist.");
             return;
         }
 
-        int apptIndex2 = ListMethods.identifyAppointment(appts, profile, date, timeslot2);
+        int apptIndex2 = methods.identifyAppointment(appts, profile, date, timeslot2);
         if (apptIndex2 !=-1) {
             Appointment appointment = appts.get(apptIndex2);
             System.out.println(profile.toString() + " has an existing appointment at " + appointment.getDate().toString() + " " + timeslot2.toString());
@@ -316,7 +317,7 @@ public class ClinicManager {
         Provider provider = (Provider) appointment.getProvider();
 
         // [PATEL, BRIDGEWATER, Somerset 08807, FAMILY] is not available at slot 1.
-        if (ListMethods.timeslotTaken(appts, provider, timeslot2, date) != -1) {
+        if (methods.timeslotTaken(appts, provider, timeslot2, date) != -1) {
             System.out.println(provider.toString() + " is not available at slot " + input[2]);
             return;
         }
@@ -424,8 +425,8 @@ public class ClinicManager {
         Node start = pointer;
         do {
             Technician tech = pointer.technician;
-            int techAvailable = ListMethods.identifyImagingAppt(imaging, tech, date, timeslot);
-            boolean roomFree = ListMethods.isRoomFree(imaging, tech, date, timeslot, room);
+            int techAvailable = methods.identifyImagingAppt(imaging, tech, date, timeslot);
+            boolean roomFree = methods.isRoomFree(imaging, tech, date, timeslot, room);
 
             if (techAvailable == -1 && roomFree) {
                 return tech;

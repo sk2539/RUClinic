@@ -30,7 +30,7 @@ public class ListMethods<E> extends List{
         return NOT_FOUND;
     }
 
-    public static int getDoctorFromNPI(List<E> objects, String npi) {
+    public int getDoctorFromNPI(List<E> objects, String npi) {
         for (int i = 0; i<objects.size(); i++) {
             E obj = objects.get(i);
             if(objects.get(i) instanceof Doctor) {
@@ -51,7 +51,7 @@ public class ListMethods<E> extends List{
         }
         return NOT_FOUND;
     }
-    public static int identifyAppointment(List<E> objects, Profile profile, Date date, Timeslot timeslot) {
+    public int identifyAppointment(List<E> objects, Profile profile, Date date, Timeslot timeslot) {
         for (int i = 0; i<objects.size(); i++) {
             if (objects.get(i) instanceof Appointment) {
                 if (((Appointment) objects.get(i)).getProfile().getProfile().equals(profile)) {
@@ -66,7 +66,7 @@ public class ListMethods<E> extends List{
         return NOT_FOUND;
     }
 
-    public static int identifyImagingAppt(List<E> objects, Technician tech, Date date, Timeslot timeslot) {
+    public int identifyImagingAppt(List<E> objects, Technician tech, Date date, Timeslot timeslot) {
         for (int i = 0; i < objects.size(); i++) {
             if (objects.get(i) instanceof Imaging) {
                 Imaging imaging = (Imaging) objects.get(i);
@@ -80,7 +80,7 @@ public class ListMethods<E> extends List{
         return NOT_FOUND; // Technician is available (no conflicting appointment found)
     }
 
-    public static boolean isRoomFree(List<E> objects, Technician tech, Date date, Timeslot timeslot, Radiology room) {
+    public boolean isRoomFree(List<E> objects, Technician tech, Date date, Timeslot timeslot, Radiology room) {
         Location location = tech.getLocation();
         for (int i = 0; i < objects.size(); i++) {
             if (objects.get(i) instanceof Imaging) {
@@ -96,7 +96,7 @@ public class ListMethods<E> extends List{
         return true; // Room is free
     }
 
-    public static int timeslotTaken(List<E> objects, Provider provider, Timeslot timeslot, Date date) {
+    public int timeslotTaken(List<E> objects, Provider provider, Timeslot timeslot, Date date) {
         for (int i = 0; i < objects.size(); i++) {
             if(objects.get(i) instanceof Appointment) {
                 if (((Appointment) objects.get(i)).getProvider().equals(provider) && ((Appointment) objects.get(i)).getDate().equals(date) && ((Appointment) objects.get(i)).getTimeslot().equals(timeslot)) {
