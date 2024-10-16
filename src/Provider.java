@@ -1,3 +1,5 @@
+package src;
+
 public abstract class Provider extends Person {
     private Location location;
 
@@ -19,16 +21,16 @@ public abstract class Provider extends Person {
 
     @Override
     public int compareTo(Person person) {
-        if (person instanceof Provider) { // Checks if the object is of type Appointment.
+        if (person instanceof Provider) { // Checks if the object is of type src.Appointment.
             Provider provider = (Provider) person;
             return this.profile.compareTo(provider.profile);
         }
-        throw new ClassCastException("Cannot compare non-Patient objects.");
+        throw new ClassCastException("Cannot compare non-src.Patient objects.");
     }
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Provider) { // Checks if the object is of type Appointment.
+        if (object instanceof Provider) { // Checks if the object is of type src.Appointment.
             Provider provider = (Provider) object;
             return this.profile.equals(provider.profile);
         }
@@ -43,7 +45,7 @@ public abstract class Provider extends Person {
         else if (this instanceof Technician) {
             return "[" + super.toString() + ", " + this.location + ", " + this.location.getCounty() + " " + this.location.getZip() + "] [rate: " + ((Technician) this).rate() + "]";
         }
-        throw new ClassCastException("Cannot perform toString() on a non-Person object.");
+        throw new ClassCastException("Cannot perform toString() on a non-src.Person object.");
     }
 
 }

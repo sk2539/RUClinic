@@ -1,3 +1,6 @@
+package util;
+import src.*;
+
 public class CircularLinkedList {
     private Node head;
     private Node tail;
@@ -26,7 +29,7 @@ public class CircularLinkedList {
         return this.tail;
     }
 
-    public void addTechnician(Technician technician) {
+    public void addTechnician(src.Technician technician) {
         Node newNode = new Node(technician);
 
         if (head == null) {
@@ -40,9 +43,9 @@ public class CircularLinkedList {
         }
     }
 
-    public Technician removeTechnician() {
+    public src.Technician removeTechnician() {
         if (head == null) {
-            System.out.println("List is empty. No technician to remove.");
+            System.out.println("util.List is empty. No technician to remove.");
             return null;
         }
 
@@ -58,18 +61,18 @@ public class CircularLinkedList {
         return removedTechnician;
     }
 
-    // MAKE SURE YOU CAN PRINT HERE - if not, put this method in ClinicManager
+    // MAKE SURE YOU CAN PRINT HERE - if not, put this method in src.ClinicManager
     public void display() {
         System.out.println();
         System.out.println("Rotation list for the technicians.");
         if (head == null) {
-            System.out.println("List is empty.");
+            System.out.println("util.List is empty.");
             return;
         }
         Node current = head;
         do {
-            System.out.print(current.technician.profile.getFirstName().toUpperCase() + " "
-                    + current.technician.profile.getLastName().toUpperCase() + " ("
+            System.out.print(current.technician.getProfile().getFirstName().toUpperCase() + " "
+                    + current.technician.getProfile().getLastName().toUpperCase() + " ("
                     + current.technician.getProvider().getLocation().toString().toUpperCase() + ")");
 
             current = current.next;

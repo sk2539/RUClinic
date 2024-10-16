@@ -1,3 +1,7 @@
+package util;
+
+import src.*;
+
 public class Sort<E> {
     private void swapAppointments(List<E> appointments, int i, int j) {
         E temp = appointments.get(i);

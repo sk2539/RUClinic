@@ -1,7 +1,9 @@
+package util;
+
 import java.util.Calendar;
 
 /**
- * The Date class represents a specific date with year, month, and day.
+ * The util.Date class represents a specific date with year, month, and day.
  * It provides methods to validate the date, check its properties,
  * and compare it with other dates. This class implements the Comparable
  * interface to allow for date comparisons.
@@ -15,7 +17,7 @@ public class Date implements Comparable<Date> {
     public static final int QUATERCENTENNIAL = 400;
 
     /**
-     * Constructor to initialize a Date object with a specific year, month, and day.
+     * Constructor to initialize a util.Date object with a specific year, month, and day.
      *
      * @param year  The year of the date
      * @param month The month of the date (1-12)
@@ -253,8 +255,8 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Main method for testing the Date class.
-     * Creates several Date objects and tests their validity and properties.
+     * Main method for testing the util.Date class.
+     * Creates several util.Date objects and tests their validity and properties.
      *
      * @param args Command-line arguments (not used)
      */

@@ -1,3 +1,5 @@
+package src;
+
 /**
  * Represents a visit associated with an appointment.
  * Each visit can reference the next visit in a linked list structure.
@@ -7,7 +9,7 @@ public class Visit {
     private Visit next;
 
     /**
-     * Constructs a Visit with a specified appointment.
+     * Constructs a src.Visit with a specified appointment.
      * @param appointment The appointment associated with this visit.
      */
     public Visit(Appointment appointment) {

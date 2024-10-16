@@ -1,3 +1,5 @@
+package src;
+
 public class Technician extends Provider {
     private int ratePerVisit;
 
@@ -8,6 +10,11 @@ public class Technician extends Provider {
     public Technician(Profile profile, Location location, int ratePerVisit) {
         super(profile, location);
         this.ratePerVisit = ratePerVisit;
+    }
+
+    @Override
+    public Profile getProfile() {
+        return this.profile;
     }
 
     public void setRatePerVisit(int ratePerVisit) {
@@ -29,7 +36,7 @@ public class Technician extends Provider {
             }
             return profileComparison;
         }
-        throw new ClassCastException("Cannot compare non-Technician objects.");
+        throw new ClassCastException("Cannot compare non-src.Technician objects.");
     }
 
     @Override
@@ -45,6 +52,6 @@ public class Technician extends Provider {
 
     @Override
     public String toString() {
-        return super.toString() + ", Rate Per Visit: $" + ratePerVisit;
+        return super.toString() + ", Rate Per src.Visit: $" + ratePerVisit;
     }
 }

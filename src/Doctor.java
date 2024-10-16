@@ -1,3 +1,5 @@
+package src;
+
 public class Doctor extends Provider {
     private Specialty specialty;
     private String npi;
@@ -30,7 +32,7 @@ public class Doctor extends Provider {
             Doctor doctor = (Doctor) doc;
             return this.profile.compareTo(doctor.getProfile());
         }
-        throw new ClassCastException("Cannot compare non-Doctor objects.");
+        throw new ClassCastException("Cannot compare non-src.Doctor objects.");
     }
 
     @Override
@@ -46,6 +48,6 @@ public class Doctor extends Provider {
 
     @Override
     public String toString() {
-        return super.toString() + ", Specialty: " + specialty + ", NPI: " + npi;
+        return super.toString() + ", src.Specialty: " + specialty + ", NPI: " + npi;
     }
 }

@@ -1,4 +1,6 @@
-public class Patient extends Person{
+package src;
+
+public class Patient extends Person {
     private Visit visit;
 
     public Patient(Visit visit) {
@@ -7,16 +9,16 @@ public class Patient extends Person{
 
     @Override
     public int compareTo(Person person) {
-        if (person instanceof Patient) { // Checks if the object is of type Appointment.
+        if (person instanceof Patient) { // Checks if the object is of type src.Appointment.
             Patient patient = (Patient) person;
             return this.profile.compareTo(patient.profile);
         }
-        throw new ClassCastException("Cannot compare non-Patient objects.");
+        throw new ClassCastException("Cannot compare non-src.Patient objects.");
     }
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Patient) { // Checks if the object is of type Appointment.
+        if (object instanceof Patient) { // Checks if the object is of type src.Appointment.
             Patient patient = (Patient) object;
             return this.profile.equals(patient.profile);
         }

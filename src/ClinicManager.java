@@ -1,3 +1,7 @@
+package src;
+
+import util.*;
+
 import java.io.File;
 import java.util.Scanner;
 
@@ -279,7 +283,7 @@ public class ClinicManager {
         System.out.println(input[1] + " " + slot.toString() + " " + profile.toString() + " " + doctor.toString() + " booked.");
     }
 
-    // given: Appointment date, timeslot, first name, last name, date of birth (date, timeslot and profile)
+    // given: src.Appointment date, timeslot, first name, last name, date of birth (date, timeslot and profile)
     public void cancel(String [] input) {
         if (input.length < 6) {
             System.out.println("Missing data tokens.");
@@ -304,7 +308,7 @@ public class ClinicManager {
         System.out.println(date.toString() + " " + slot.toString() + " " + profile.toString() + " does not exist.");
     }
 
-    // Reschedule an appointment given: R, Date, Timeslot1, First name, Last name, DOB, Timeslot2
+    // Reschedule an appointment given: R, util.Date, Timeslot1, First name, Last name, DOB, Timeslot2
     public void reschedule(String[] input) {
         if (input.length < 7) {
             System.out.println("Missing data tokens.");
@@ -356,11 +360,11 @@ public class ClinicManager {
     public boolean checkDOB(Date dob)
     {
         if(!dob.isValidDate()) {
-            System.out.println("Patient dob: " + dob.toString() + " is not a valid calendar date");
+            System.out.println("src.Patient dob: " + dob.toString() + " is not a valid calendar date");
             return false;
         }
         else if(dob.isToday() || dob.isFutureDate()) {
-            System.out.println("Patient dob: " + dob.toString() + " is today or a date after today.");
+            System.out.println("src.Patient dob: " + dob.toString() + " is today or a date after today.");
             return false;
         }
         else {
@@ -371,19 +375,19 @@ public class ClinicManager {
     public boolean checkApptDate(String input) {
         Date date = stringToDate(input);
         if (!date.isValidDate()) {
-            System.out.println("Appointment date: " + input + " is not a valid calendar date");
+            System.out.println("src.Appointment date: " + input + " is not a valid calendar date");
             return false;
         }
         else if(date.isBeforeToday() || date.isToday()) {
-            System.out.println("Appointment date: " + input + " is today or a date before today.");
+            System.out.println("src.Appointment date: " + input + " is today or a date before today.");
             return false;
         }
         else if (date.onWeekend()) {
-            System.out.println("Appointment date: " + input + " is Saturday or Sunday.");
+            System.out.println("src.Appointment date: " + input + " is Saturday or Sunday.");
             return false;
         }
         else if(!date.isWithinSixMonths()) {
-            System.out.println("Appointment date: " + input + " is not within six months.");
+            System.out.println("src.Appointment date: " + input + " is not within six months.");
             return false;
         }
         else {
@@ -445,18 +449,18 @@ public class ClinicManager {
             }
         }
         if(isFirstFree){
-            return pointer.technician;
+            return pointer.getTechnician();
         }
         Node start = pointer;
         do {
-            Technician tech = pointer.technician;
+            Technician tech = pointer.getTechnician();
             int techAvailable = methods.identifyImagingAppt(imaging, tech, date, timeslot);
             boolean roomFree = methods.isRoomFree(imaging, tech, date, timeslot, room);
 
             if (techAvailable == -1 && roomFree) {
                 return tech;
             }
-            pointer = pointer.next;
+            pointer = pointer.getNext();
         } while (pointer != start);
         return null; // No available technician found
     }

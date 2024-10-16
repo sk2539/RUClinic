@@ -1,5 +1,9 @@
+package src;
+
+import util.Date;
+
 /**
- * The Profile class represents a patient's profile, including their first name,
+ * The src.Profile class represents a patient's profile, including their first name,
  * last name, and date of birth. It implements the Comparable interface to allow
  * profiles to be compared based on their attributes.
  */
@@ -9,7 +13,7 @@ public class Profile implements Comparable<Profile> {
     private Date dob;
 
     /**
-     * Constructor: Initializes a Profile object with the specified first name,
+     * Constructor: Initializes a src.Profile object with the specified first name,
      * last name, and date of birth.
      *
      * @param fname The first name of the patient
@@ -66,9 +70,9 @@ public class Profile implements Comparable<Profile> {
     }
 
     /**
-     * Method: Compares this Profile object to another object for equality.
+     * Method: Compares this src.Profile object to another object for equality.
      *
-     * @param patientProfile The object to be compared with this Profile
+     * @param patientProfile The object to be compared with this src.Profile
      * @return true if the profiles are equal; false otherwise
      */
     @Override
@@ -83,11 +87,11 @@ public class Profile implements Comparable<Profile> {
     }
 
     /**
-     * Method: Compares this Profile object with another Profile object for order.
+     * Method: Compares this src.Profile object with another src.Profile object for order.
      *
-     * @param patientProfile The Profile object to compare to
-     * @return A negative integer, zero, or a positive integer as this Profile
-     *         is less than, equal to, or greater than the specified Profile
+     * @param patientProfile The src.Profile object to compare to
+     * @return A negative integer, zero, or a positive integer as this src.Profile
+     *         is less than, equal to, or greater than the specified src.Profile
      */
     @Override
     public int compareTo(Profile patientProfile) {
@@ -104,7 +108,7 @@ public class Profile implements Comparable<Profile> {
     }
 
     /**
-     * Method: Returns a string representation of the Profile.
+     * Method: Returns a string representation of the src.Profile.
      *
      * @return A string containing the first name, last name, and date of birth
      */
@@ -114,7 +118,7 @@ public class Profile implements Comparable<Profile> {
     }
 
     /**
-     * Main method for testing the compareTo method with various Profile instances.
+     * Main method for testing the compareTo method with various src.Profile instances.
      *
      * @param args Command line arguments (not used)
      */
@@ -131,7 +135,7 @@ public class Profile implements Comparable<Profile> {
         Profile profile5 = new Profile("David", "Mit", date3);
         Profile profile6 = new Profile("Allen", "Sue", date3);
         System.out.println(profile5.toString() + " compared to " + profile6.toString() + " is: " + profile5.compareTo(profile6));
-        Date date4 = new Date (2011, 8, 23);
+        Date date4 = new Date(2011, 8, 23);
         Date date5 = new Date (2012, 9, 18);
         Profile profile7 = new Profile("Minho", "Lee", date4);
         Profile profile8 = new Profile("Minho", "Lee", date5);

@@ -1,5 +1,7 @@
+package src;
+
 /**
- * The Location enum represents various geographical locations along with their corresponding
+ * The src.Location enum represents various geographical locations along with their corresponding
  * counties and ZIP codes. Each location is defined with a name, county, and ZIP code.
  */
 public enum Location {
@@ -14,7 +16,7 @@ public enum Location {
     private final String zip;
 
     /**
-     * Constructor to initialize a Location enum instance with a specific county and ZIP code.
+     * Constructor to initialize a src.Location enum instance with a specific county and ZIP code.
      *
      * @param county The county of the location
      * @param zip    The ZIP code of the location

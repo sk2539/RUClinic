@@ -1,5 +1,7 @@
+package src;
+
 /**
- * The Specialty enum defines different medical specialties, each
+ * The src.Specialty enum defines different medical specialties, each
  * associated with a specific charge amount. It provides a way to
  * categorize providers based on their specialization.
  */
@@ -10,7 +12,7 @@ public enum Specialty {
     private final int charge;
 
     /**
-     * Constructor: Initializes the Specialty enum with a specified
+     * Constructor: Initializes the src.Specialty enum with a specified
      * charge amount.
      *
      * @param charge The charge amount for the specialty

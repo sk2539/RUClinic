@@ -1,7 +1,12 @@
+package util;
+
+import src.*;
+
 import java.text.DecimalFormat;
 
 public class ListMethods<E> extends List{
     Sort sort = new Sort();
+    int NOT_FOUND = -1;
     public ListMethods()
     {
         super();
@@ -83,7 +88,7 @@ public class ListMethods<E> extends List{
 
     public void printOfficeAppointments(List <E> objects) {
         System.out.println();
-        System.out.println("** List of office appointments ordered by county/date/time.");
+        System.out.println("** util.List of office appointments ordered by county/date/time.");
         sort.sortByLocation(objects);
         printOfficeAppts(objects);
         System.out.println("** end of list **");
@@ -100,7 +105,7 @@ public class ListMethods<E> extends List{
 
     public void printImagingAppointments(List <E> objects) {
         System.out.println();
-        System.out.println("** List of radiology appointments ordered by county/date/time.");
+        System.out.println("** util.List of radiology appointments ordered by county/date/time.");
         sort.sortByLocation(objects);
         printImagingAppts(objects);
 
@@ -233,11 +238,11 @@ public class ListMethods<E> extends List{
                 if (imaging.getProvider().equals(tech) &&
                         imaging.getDate().equals(date) &&
                         imaging.getTimeslot().equals(timeslot)) {
-                    return i; // Technician is NOT available (appointment found)
+                    return i; // src.Technician is NOT available (appointment found)
                 }
             }
         }
-        return NOT_FOUND; // Technician is available (no conflicting appointment found)
+        return NOT_FOUND; // src.Technician is available (no conflicting appointment found)
     }
 
     public boolean isRoomFree(List<E> objects, Technician tech, Date date, Timeslot timeslot, Radiology room) {

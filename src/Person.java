@@ -1,3 +1,5 @@
+package src;
+
 public class Person implements Comparable<Person> {
 
     protected Profile profile;
@@ -20,7 +22,7 @@ public class Person implements Comparable<Person> {
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Person) { // Checks if the object is of type Appointment.
+        if (object instanceof Person) { // Checks if the object is of type src.Appointment.
             Person person = (Person) object;
             return this.profile.equals(person.profile);
         }
@@ -34,15 +36,15 @@ public class Person implements Comparable<Person> {
 
     // FIGURE OUT POLYMORPHISM FOR THIS
     /**
-     * Method: Retrieves the Provider if the Person is a Provider.
+     * Method: Retrieves the src.Provider if the src.Person is a src.Provider.
      *
-     * @return The Provider object or null if not a Provider
+     * @return The src.Provider object or null if not a src.Provider
      */
     public Provider getProvider() {
         if (this instanceof Provider) {
-            return (Provider) this; // Safely cast to Provider
+            return (Provider) this; // Safely cast to src.Provider
         }
-        return null; // Return null if the Person is not a Provider
+        return null; // Return null if the src.Person is not a src.Provider
     }
 
     public Location getLocation() {

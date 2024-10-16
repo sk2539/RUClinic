@@ -1,3 +1,7 @@
+package util;
+
+import src.Technician;
+
 public class Node {
     Technician technician;
     Node next;
