@@ -40,6 +40,40 @@ public class Sort<E> {
         }
     }
 
+    public void sortByProviderForPrint(List<Provider> list) {
+        int n = list.size();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                String lastName1 = list.get(j).getProfile().getLastName();
+                String lastName2 = list.get(j + 1).getProfile().getLastName();
+                String firstName1 = list.get(j).getProfile().getFirstName();
+                String firstName2 = list.get(j + 1).getProfile().getFirstName();
+                Date dob1 = list.get(j).getProfile().getDob();
+                Date dob2 = list.get(j + 1).getProfile().getDob();
+                if (lastName1.compareTo(lastName2) > 0) {
+                    Provider temp = list.get(j);
+                    list.set(j, list.get(j + 1));
+                    list.set(j + 1, temp);
+                }
+                if (lastName1.equals(lastName2)) {
+                    if (firstName1.compareTo(firstName2) > 0) {
+                        Provider temp = list.get(j);
+                        list.set(j, list.get(j + 1));
+                        list.set(j + 1, temp);
+                    }
+                    else if (firstName1.equals(firstName2)) {
+                        if (dob1.compareTo(dob2) > 0) {
+                            Provider temp = list.get(j);
+                            list.set(j, list.get(j + 1));
+                            list.set(j + 1, temp);
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
     public void sortByPatient(List<E> list)
     {
         for (int i = 0; i < list.size() - 1; i++) {

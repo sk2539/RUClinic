@@ -94,13 +94,13 @@ public class ClinicManager {
                                 methods.printImagingAppointments(appts);
                             }
                             break;
-//                        case "PC":
-//                            if (appts.size() == 0) {
-//                                System.out.println("The schedule calendar is empty.");
-//                            } else {
-//                                appts.printCredits();
-//                            }
-//                            break;
+                        case "PC":
+                            if (appts.size() == 0) {
+                                System.out.println("The schedule calendar is empty.");
+                            } else {
+                                methods.printProviderCharges(appts, technicians);
+                            }
+                            break;
                         default:
                             if (!command.isEmpty() && Character.isLowerCase(command.charAt(0))) {
                                 System.out.println("Invalid command!");
@@ -439,9 +439,6 @@ public class ClinicManager {
     }
 
     public Technician techAvailable(List<Appointment> imaging, Date date, Timeslot timeslot, Radiology room) {
-//        if (technicians.getHead() == null) {
-//            return null; // Handle empty list case
-//        }
         boolean isFirstFree = true;
         for(int i = 0; i<appts.size(); i++){
             if(appts.get(i) instanceof Imaging){

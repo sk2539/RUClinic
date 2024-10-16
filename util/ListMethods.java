@@ -193,10 +193,43 @@ public class ListMethods<E> extends List{
         System.out.println("** end of list **");
     }
 
-    public void printProviderCharges(List <E> objects) {
-        System.out.println("** Credit amount ordered by provider. **");
-        sort.sortByProvider(objects);
-
+    public void printProviderCharges(List <E> objects, CircularLinkedList techsCLL) {
+        List<Provider> providers = new List<Provider>();
+        System.out.println("\n** Credit amount ordered by provider. **");
+        Node start = techsCLL.getHead();
+        Provider currProvider = null;
+        Node curr = start;
+        do{
+            providers.add(curr.getTechnician());
+            curr = curr.next;
+        }while(curr != start);
+        for(int i = 0; i<objects.size(); i++) {
+            if(objects.get(i) instanceof Appointment && ((Appointment) objects.get(i)).getProvider() instanceof Doctor) {
+                providers.add(((Appointment) objects.get(i)).getProvider());
+            }
+        }
+        sort.sortByProviderForPrint(providers);
+        int counter = 0;
+        int charge;
+        for(int j = 0; j<providers.size(); j++){
+            charge = 0;
+            currProvider = providers.get(j);
+            for(int i = 0; i<objects.size(); i++) {
+                if(objects.get(i) instanceof Imaging && currProvider instanceof Technician) {
+                    if(((Imaging) objects.get(i)).getProvider().equals(currProvider)) {
+                        charge += ((Imaging) objects.get(i)).getProvider().rate();
+                    }
+                }
+                else if(objects.get(i) instanceof Appointment && currProvider instanceof Doctor) {
+                    if(((Appointment) objects.get(i)).getProvider().equals(currProvider)) {
+                        charge += (((Appointment) objects.get(i)).getProvider().rate());
+                    }
+                }
+            }
+            counter++;
+            System.out.println("(" + counter + ") " + currProvider.getProfile().toString() + " [credit amount: $" + charge + "] ");
+        }
+        System.out.println();
     }
 
     // REMEMBER TO DO PS COMMAND - ask dhyana about this
@@ -277,4 +310,5 @@ public class ListMethods<E> extends List{
         }
         return NOT_FOUND;
     }
+
 }
