@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+
 public class ListMethods<E> extends List{
     Sort sort = new Sort();
     public ListMethods()
@@ -50,7 +52,6 @@ public class ListMethods<E> extends List{
             E obj = objects.get(i);
             if (obj instanceof Appointment) {
                 System.out.println(formatAppointment((Appointment) obj));
-
             }
         }
     }
@@ -74,17 +75,17 @@ public class ListMethods<E> extends List{
         return String.format("%s %s %s %s %s %s",
                 imaging.getDate(),
                 imaging.getTimeslot().toString(),
-                app.getProfile().getProfile().getFirstName(),
-                app.getProfile().getProfile().getLastName(),
-                app.getProfile().getProfile().getDob(),
-                app.getProvider().toString().toUpperCase());
+                imaging.getProfile().getProfile().getFirstName(),
+                imaging.getProfile().getProfile().getLastName(),
+                imaging.getProfile().getProfile().getDob(),
+                imaging.getProvider().toString().toUpperCase());
     }
 
     public void printOfficeAppointments(List <E> objects) {
         System.out.println();
         System.out.println("** List of office appointments ordered by county/date/time.");
         sort.sortByLocation(objects);
-        printOfficeAppts();
+        printOfficeAppts(objects);
         System.out.println("** end of list **");
     }
 
@@ -101,11 +102,11 @@ public class ListMethods<E> extends List{
         System.out.println();
         System.out.println("** List of radiology appointments ordered by county/date/time.");
         sort.sortByLocation(objects);
-        printImagingAppts();
+        printImagingAppts(objects);
 
     }
 
-    private void printImagingAppts(List <E> Objects) {
+    private void printImagingAppts(List <E> objects) {
         for (int i = 0; i<objects.size(); i++) {
             E obj = objects.get(i);
             if (obj instanceof Imaging) {
@@ -133,6 +134,57 @@ public class ListMethods<E> extends List{
         System.out.println("** Appointments ordered by county/date/time.");
         sort.sortByLocation(objects);
         printAppointments(objects);
+        System.out.println("** end of list **");
+    }
+
+    /**
+     * Prints all charges for appointments, ordered by patient.
+     */
+    public void printAllCharge(List <E> objects) {
+        if (objects.size() == 0) {
+            System.out.println("There are no appointments in the system.");
+            return;
+        }
+        System.out.println("** Billing statement ordered by patient **");
+        sort.sortByProfile(objects);
+        DecimalFormat formatDec = new DecimalFormat("$#,##0.00");
+        int counter = 1;
+        Profile currentProfile = null;
+        int currentCharge = 0;
+
+        for (int i = 0; i < objects.size(); i++) {
+            E obj = objects.get(i);
+            int charge=0;
+            Profile profile=null;
+            if (obj instanceof Appointment) {
+                profile = ((Appointment) obj).getProfile().getProfile();
+                if (((Appointment) obj).getProvider() instanceof Doctor) {
+                    charge = ((Doctor)((Appointment) obj).getProvider()).getSpecialty().getCharge();
+                }
+                else if (((Appointment) obj).getProvider() instanceof Technician) {
+                    charge = ((Technician) ((Appointment) obj).getProvider()).rate();
+                }
+            }
+
+            if (currentProfile == null || !currentProfile.equals(profile)) {
+                if (currentProfile != null) {
+                    System.out.printf("(%d) %s [amount due: %s]%n",
+                            counter++,
+                            currentProfile.toString(),
+                            formatDec.format(currentCharge));
+                }
+                currentProfile = profile;
+                currentCharge = charge;
+            } else {
+                currentCharge += charge;
+            }
+        }
+        if (currentProfile != null) {
+            System.out.printf("(%d) %s [amount due: %s]%n",
+                    counter,
+                    currentProfile.toString(),
+                    formatDec.format(currentCharge));
+        }
         System.out.println("** end of list **");
     }
 

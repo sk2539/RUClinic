@@ -69,27 +69,27 @@ public class ClinicManager {
                                 methods.printByLocation(appts);
                             }
                             break;
-//                        case "PS":
-//                            if (appts.size() == 0) {
-//                                System.out.println("The schedule calendar is empty.");
-//                            } else {
-//                                methods.printAllCharge(appts);
-//                            }
-//                            break;
-//                        case "PO":
-//                            if (appts.size() == 0) {
-//                                System.out.println("The schedule calendar is empty.");
-//                            } else {
-//                                appts.printOfficeAppointments();
-//                            }
-//                            break;
-//                        case "PI":
-//                            if (appts.size() == 0) {
-//                                System.out.println("The schedule calendar is empty.");
-//                            } else {
-//                                appts.printImagingAppointments();
-//                            }
-//                            break;
+                        case "PS":
+                            if (appts.size() == 0) {
+                                System.out.println("The schedule calendar is empty.");
+                            } else {
+                                methods.printAllCharge(appts);
+                            }
+                            break;
+                        case "PO":
+                            if (appts.size() == 0) {
+                                System.out.println("The schedule calendar is empty.");
+                            } else {
+                                methods.printOfficeAppointments(appts);
+                            }
+                            break;
+                        case "PI":
+                            if (appts.size() == 0) {
+                                System.out.println("The schedule calendar is empty.");
+                            } else {
+                                methods.printImagingAppointments(appts);
+                            }
+                            break;
 //                        case "PC":
 //                            if (appts.size() == 0) {
 //                                System.out.println("The schedule calendar is empty.");
