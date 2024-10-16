@@ -193,6 +193,12 @@ public class ListMethods<E> extends List{
         System.out.println("** end of list **");
     }
 
+    public void printProviderCharges(List <E> objects) {
+        System.out.println("** Credit amount ordered by provider. **");
+        sort.sortByProvider(objects);
+
+    }
+
     // REMEMBER TO DO PS COMMAND - ask dhyana about this
 
     public int getDoctorFromNPI(List<E> objects, String npi) {
