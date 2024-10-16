@@ -1,4 +1,5 @@
 public class ListMethods<E> extends List{
+    Sort sort = new Sort();
     public ListMethods()
     {
         super();
@@ -29,6 +30,113 @@ public class ListMethods<E> extends List{
         }
         return NOT_FOUND;
     }
+
+    /**
+     * Prints all appointments ordered by date, time, and provider.
+     */
+    public void printByAppointment(List <E> objects) {
+        System.out.println();
+        System.out.println("** Appointments ordered by date/time/provider.");
+        sort.sortByAppointment(objects);
+        printAppointments(objects);
+        System.out.println("** end of list **");
+    }
+
+    /**
+     * Prints all appointments in the list.
+     */
+    private void printAppointments(List <E> objects) {
+        for (int i = 0; i < objects.size(); i++) {
+            E obj = objects.get(i);
+            if (obj instanceof Appointment) {
+                System.out.println(formatAppointment((Appointment) obj));
+
+            }
+        }
+    }
+
+    /**
+     * Formats an appointment for display.
+     * @param app The appointment to format.
+     * @return A formatted string representing the appointment.
+     */
+    private String formatAppointment(Appointment app) {
+        return String.format("%s %s %s %s %s %s",
+                app.getDate(),
+                app.getTimeslot().toString(),
+                app.getProfile().getProfile().getFirstName(),
+                app.getProfile().getProfile().getLastName(),
+                app.getProfile().getProfile().getDob(),
+                app.getProvider().toString().toUpperCase());
+    }
+
+    private String formatImagingAppointments(Imaging imaging) {
+        return String.format("%s %s %s %s %s %s",
+                imaging.getDate(),
+                imaging.getTimeslot().toString(),
+                app.getProfile().getProfile().getFirstName(),
+                app.getProfile().getProfile().getLastName(),
+                app.getProfile().getProfile().getDob(),
+                app.getProvider().toString().toUpperCase());
+    }
+
+    public void printOfficeAppointments(List <E> objects) {
+        System.out.println();
+        System.out.println("** List of office appointments ordered by county/date/time.");
+        sort.sortByLocation(objects);
+        printOfficeAppts();
+        System.out.println("** end of list **");
+    }
+
+    private void printOfficeAppts(List <E> objects) {
+        for (int i =0; i < objects.size(); i++) {
+            E obj = objects.get(i);
+            if (obj instanceof Appointment) {
+                System.out.println(formatAppointment((Appointment) obj));
+            }
+        }
+    }
+
+    public void printImagingAppointments(List <E> objects) {
+        System.out.println();
+        System.out.println("** List of radiology appointments ordered by county/date/time.");
+        sort.sortByLocation(objects);
+        printImagingAppts();
+
+    }
+
+    private void printImagingAppts(List <E> Objects) {
+        for (int i = 0; i<objects.size(); i++) {
+            E obj = objects.get(i);
+            if (obj instanceof Imaging) {
+                System.out.println(formatImagingAppointments((Imaging) obj));
+            }
+        }
+    }
+
+    /**
+     * Prints all appointments ordered by patient, date, and time.
+     */
+    public void printByPatient(List <E> objects) {
+        System.out.println();
+        System.out.println("** Appointments ordered by patient/date/time **");
+        sort.sortByPatient(objects);
+        printAppointments(objects);
+        System.out.println("** end of list **");
+    }
+
+    /**
+     * Prints all appointments ordered by location, date, and time.
+     */
+    public void printByLocation(List <E> objects) {
+        System.out.println();
+        System.out.println("** Appointments ordered by county/date/time.");
+        sort.sortByLocation(objects);
+        printAppointments(objects);
+        System.out.println("** end of list **");
+    }
+
+    // REMEMBER TO DO PS COMMAND - ask dhyana about this
 
     public int getDoctorFromNPI(List<E> objects, String npi) {
         for (int i = 0; i<objects.size(); i++) {

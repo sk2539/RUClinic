@@ -7,6 +7,7 @@ public class ClinicManager {
     CircularLinkedList technicians = new CircularLinkedList();
     Node pointer;
     List<Appointment> imagingAppts = new List<Appointment>();
+    Sort sort = new Sort();
     ListMethods methods = new ListMethods();
 
     // this class replaces Scheduler class from project1
@@ -47,32 +48,53 @@ public class ClinicManager {
                         case "R":
                             reschedule(splittedInput);
                             break;
-//                        case "PA":
-//                            if (appts.size() == 0) {
-//                                System.out.println("The schedule calendar is empty.");
-//                            } else {
-//                                appts.printByAppointment();
-//                            }
-//                            break;
-//                        case "PP":
-//                            if (appts.size() == 0) {
-//                                System.out.println("The schedule calendar is empty.");
-//                            } else {
-//                                appts.printByPatient();
-//                            }
-//                            break;
-//                        case "PL":
-//                            if (appts.size() == 0) {
-//                                System.out.println("The schedule calendar is empty.");
-//                            } else {
-//                                appts.printByLocation();
-//                            }
-//                            break;
+                        case "PA":
+                            if (appts.size() == 0) {
+                                System.out.println("The schedule calendar is empty.");
+                            } else {
+                                methods.printByAppointment(appts);
+                            }
+                            break;
+                        case "PP":
+                            if (appts.size() == 0) {
+                                System.out.println("The schedule calendar is empty.");
+                            } else {
+                                methods.printByPatient(appts);
+                            }
+                            break;
+                        case "PL":
+                            if (appts.size() == 0) {
+                                System.out.println("The schedule calendar is empty.");
+                            } else {
+                                methods.printByLocation(appts);
+                            }
+                            break;
 //                        case "PS":
 //                            if (appts.size() == 0) {
 //                                System.out.println("The schedule calendar is empty.");
 //                            } else {
-//                                appts.printAllCharge();
+//                                methods.printAllCharge(appts);
+//                            }
+//                            break;
+//                        case "PO":
+//                            if (appts.size() == 0) {
+//                                System.out.println("The schedule calendar is empty.");
+//                            } else {
+//                                appts.printOfficeAppointments();
+//                            }
+//                            break;
+//                        case "PI":
+//                            if (appts.size() == 0) {
+//                                System.out.println("The schedule calendar is empty.");
+//                            } else {
+//                                appts.printImagingAppointments();
+//                            }
+//                            break;
+//                        case "PC":
+//                            if (appts.size() == 0) {
+//                                System.out.println("The schedule calendar is empty.");
+//                            } else {
+//                                appts.printCredits();
 //                            }
 //                            break;
                         default:
@@ -136,11 +158,10 @@ public class ClinicManager {
     }
 
     public void printProviders() {
-        Sort.sortByProvider(providers); // check if this is the right syntax
+        sort.sortByProvider(providers); // check if this is the right syntax
         for (int i = 0; i<providers.size(); i++) {
             System.out.println(providers.get(i).toString());
         }
-
         technicians.display();
     }
 
@@ -245,8 +266,12 @@ public class ClinicManager {
             return;
         }
         Doctor doctor = (Doctor) providers.get(matchingDoctorIndex);
-        if (methods.timeslotTaken(appts, doctor, slot, date) != -1) {
+        if (methods.identifyAppointment(appts, profile, date, slot)!=-1) {
             System.out.println(appts.get(methods.timeslotTaken(appts, doctor, slot, date)).getProfile().toString() + " has an existing appointment at the same timeslot.");
+            return;
+        }
+        if (methods.timeslotTaken(appts, doctor, slot, date) != -1) {
+            System.out.println(doctor.toString() + " is not available at slot " + input[2] + ".");
             return;
         }
         Appointment newAppt = new Appointment(date, slot, patient, doctor);

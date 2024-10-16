@@ -52,11 +52,14 @@ public class Timeslot implements Comparable<Timeslot> {
     @Override
     public String toString() {
         String minuteString = String.format("%02d", this.minute);
-        if (this.hour <= 11) {
-            return hour + ":" + minuteString + " AM";
-        } else if (this.hour > 11) {
-            return hour + ":" + minuteString + " PM";
+        String period = (this.hour < 12) ? "AM" : "PM";
+
+        // Convert the hour to 12-hour format
+        int displayHour = this.hour % 12;
+        if (displayHour == 0) {
+            displayHour = 12; // 0 hours should be displayed as 12 AM/PM
         }
-        return "";
+
+        return displayHour + ":" + minuteString + " " + period;
     }
 }

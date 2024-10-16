@@ -1,20 +1,27 @@
-public class Sort {
-    private static void swapAppointments(List<Appointment> appointments, int i, int j) {
-        Appointment temp = appointments.get(i);
-        appointments.set(i, appointments.get(j));
-        appointments.set(j, temp);
+public class Sort<E> {
+    private void swapAppointments(List<E> appointments, int i, int j) {
+        E temp = appointments.get(i);
+        E second = appointments.get(j);
+        if (temp instanceof Appointment && second instanceof Appointment) {
+            appointments.set(i, second);
+            appointments.set(j, temp);
+        }
     }
 
-    public static void sortByAppointment(List<Appointment> list, char key) {
+    public void sortByAppointment(List<E> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = 0; j < list.size() - i - 1; j++) {
-                if (list.get(j).compareByAppointment(list.get(j+1)) > 0) {
-                    swapAppointments(list, j, j + 1);
+                E obj = list.get(j);
+                E obj2 = list.get(j+1);
+                if (obj instanceof Appointment && obj2 instanceof Appointment) {
+                    if (((Appointment) obj).compareByAppointment((Appointment) obj2) > 0) {
+                        swapAppointments(list, j, j + 1);
+                    }
                 }
             }
         }
     }
-    public static void sortByProvider(List<Provider> list) {
+    public void sortByProvider(List<Provider> list) {
         int n = list.size();
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
@@ -29,34 +36,46 @@ public class Sort {
         }
     }
 
-    public static void sortByPatient(List<Appointment> list)
+    public void sortByPatient(List<E> list)
     {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = 0; j < list.size() - i - 1; j++) {
-                if (list.get(j).compareByPatient(list.get(j+1)) > 0) {
-                    swapAppointments(list, j, j + 1);
+                E obj = list.get(j);
+                E obj2 = list.get(j+1);
+                if (obj instanceof Appointment && obj2 instanceof Appointment) {
+                    if (((Appointment) obj).compareByPatient((Appointment) obj2) > 0) {
+                        swapAppointments(list, j, j + 1);
+                    }
                 }
             }
         }
     }
 
-    public static void sortByLocation(List<Appointment> list)
+    public void sortByLocation(List<E> list)
     {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = 0; j < list.size() - i - 1; j++) {
-                if (list.get(j).compareByLocation(list.get(j+1)) > 0) {
-                    swapAppointments(list, j, j + 1);
+                E obj = list.get(j);
+                E obj2 = list.get(j+1);
+                if (obj instanceof Appointment && obj2 instanceof Appointment) {
+                    if (((Appointment) obj).compareByLocation((Appointment) obj2) > 0) {
+                        swapAppointments(list, j, j + 1);
+                    }
                 }
             }
         }
     }
 
-    public static void sortByProfile(List<Appointment> list)
+    public void sortByProfile(List<E> list)
     {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = 0; j < list.size() - i - 1; j++) {
-                if (list.get(j).getProfile().compareTo(list.get(j + 1).getProfile()) < 0) {
-                    swapAppointments(list, j, j + 1);
+                E obj = list.get(j);
+                E obj2 = list.get(j+1);
+                if (obj instanceof Appointment && obj2 instanceof Appointment) {
+                    if (((Appointment) obj).getProfile().compareTo(((Appointment) obj2).getProfile()) < 0) {
+                        swapAppointments(list, j, j + 1);
+                    }
                 }
             }
         }
