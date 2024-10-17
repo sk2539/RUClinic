@@ -1,4 +1,4 @@
-package src;
+package clinic.src;
 
 public class Technician extends Provider {
     private int ratePerVisit;

@@ -1,6 +1,6 @@
-package util;
+package clinic.src.util;
 
-import src.*;
+import clinic.src.*;
 
 import java.text.DecimalFormat;
 
@@ -88,7 +88,7 @@ public class ListMethods<E> extends List{
 
     public void printOfficeAppointments(List <E> objects) {
         System.out.println();
-        System.out.println("** util.List of office appointments ordered by county/date/time.");
+        System.out.println("** clinic.src.util.List of office appointments ordered by county/date/time.");
         sort.sortByLocation(objects);
         printOfficeAppts(objects);
         System.out.println("** end of list **");
@@ -279,11 +279,11 @@ public class ListMethods<E> extends List{
                 if (imaging.getProvider().getProfile().equals(tech.getProfile()) &&
                         imaging.getDate().equals(date) &&
                         imaging.getTimeslot().equals(timeslot)) {
-                    return i; // src.Technician is NOT available (appointment found)
+                    return i; // clinic.src.Technician is NOT available (appointment found)
                 }
             }
         }
-        return NOT_FOUND; // src.Technician is available (no conflicting appointment found)
+        return NOT_FOUND; // clinic.src.Technician is available (no conflicting appointment found)
     }
 
     public int identifyImagingAppt2(List<E> imagingAppts, Profile profile, Date apptDate, Timeslot timeslot)
@@ -294,7 +294,7 @@ public class ListMethods<E> extends List{
                 if (imaging.getProfile().getProfile().equals(profile) &&
                         imaging.getDate().equals(apptDate) &&
                         imaging.getTimeslot().equals(timeslot)) {
-                    return i; // src.Technician is NOT available (appointment found)
+                    return i; // clinic.src.Technician is NOT available (appointment found)
                 }
             }
         }

@@ -1,6 +1,6 @@
-package util;
+package clinic.src.util;
 
-import src.*;
+import clinic.src.*;
 
 public class Sort<E> {
     private void swapAppointments(List<E> appointments, int i, int j) {

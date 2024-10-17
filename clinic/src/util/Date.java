@@ -1,9 +1,9 @@
-package util;
+package clinic.src.util;
 
 import java.util.Calendar;
 
 /**
- * The util.Date class represents a specific date with year, month, and day.
+ * The clinic.src.util.Date class represents a specific date with year, month, and day.
  * It provides methods to validate the date, check its properties,
  * and compare it with other dates. This class implements the Comparable
  * interface to allow for date comparisons.
@@ -17,7 +17,7 @@ public class Date implements Comparable<Date> {
     public static final int QUATERCENTENNIAL = 400;
 
     /**
-     * Constructor to initialize a util.Date object with a specific year, month, and day.
+     * Constructor to initialize a clinic.src.util.Date object with a specific year, month, and day.
      *
      * @param year  The year of the date
      * @param month The month of the date (1-12)
@@ -252,32 +252,5 @@ public class Date implements Comparable<Date> {
      */
     public int getDay() {
         return this.day;
-    }
-
-    /**
-     * Main method for testing the util.Date class.
-     * Creates several util.Date objects and tests their validity and properties.
-     *
-     * @param args Command-line arguments (not used)
-     */
-    public static void main(String[] args) {
-        Date testOne = new Date(2004, 1, 60);
-        boolean testOneWorked = testOne.isValid();
-        System.out.println(testOne.toString() + " is a valid date: " + testOneWorked);
-        Date testTwo = new Date(2024, 9, 28);
-        boolean testTwoWorked = testOne.isValid();
-        System.out.println(testTwo.toString() + " is a valid date: " + testTwoWorked);
-        Date testThree = new Date(2025, 3, 9);
-        boolean testThreeWorked = testThree.isWithinSixMonths();
-        System.out.println(testThree.toString() + " is a valid date: " + testThreeWorked);
-        Date testFour = new Date(2024, 10, 15);
-        boolean testFourWorked = testFour.isValid();
-        System.out.println(testFour.toString() + " is a valid date: " + testFourWorked);
-        Date testFive = new Date(2023, 9, 16);
-        boolean testFiveWorked = testFive.onWeekend();
-        System.out.println(testFive.toString() + " is a valid date: " + testFiveWorked);
-        Date testSix = new Date(2024, 3, 1);
-        boolean testSixWorked = testSix.isLeapYear();
-        System.out.println(testSix.toString() + " is a valid date: " + testSixWorked);
     }
 }

@@ -1,4 +1,4 @@
-package src;
+package clinic.src;
 
 public class Patient extends Person {
     private Visit visit;
@@ -9,7 +9,7 @@ public class Patient extends Person {
 
     @Override
     public int compareTo(Person person) {
-        if (person instanceof Patient) { // Checks if the object is of type src.Appointment.
+        if (person instanceof Patient) { // Checks if the object is of type clinic.src.Appointment.
             Patient patient = (Patient) person;
             return this.profile.compareTo(patient.profile);
         }
@@ -18,7 +18,7 @@ public class Patient extends Person {
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Patient) { // Checks if the object is of type src.Appointment.
+        if (object instanceof Patient) { // Checks if the object is of type clinic.src.Appointment.
             Patient patient = (Patient) object;
             return this.profile.equals(patient.profile);
         }

@@ -1,4 +1,4 @@
-package src;
+package clinic.src;
 
 /**
  * Represents a visit associated with an appointment.
@@ -9,7 +9,7 @@ public class Visit {
     private Visit next;
 
     /**
-     * Constructs a src.Visit with a specified appointment.
+     * Constructs a clinic.src.Visit with a specified appointment.
      * @param appointment The appointment associated with this visit.
      */
     public Visit(Appointment appointment) {

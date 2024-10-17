@@ -1,6 +1,6 @@
-package util;
+package clinic.src.util;
 
-import src.Technician;
+import clinic.src.Technician;
 
 public class Node {
     Technician technician;

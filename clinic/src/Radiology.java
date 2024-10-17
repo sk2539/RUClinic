@@ -1,4 +1,4 @@
-package src;
+package clinic.src;
 
 public enum Radiology {
     CATSCAN,

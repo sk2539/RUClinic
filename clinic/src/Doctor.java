@@ -1,4 +1,4 @@
-package src;
+package clinic.src;
 
 public class Doctor extends Provider {
     private Specialty specialty;

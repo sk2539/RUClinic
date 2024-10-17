@@ -1,4 +1,4 @@
-package util;
+package clinic.src.util;
 
 import java.util.Iterator;
 

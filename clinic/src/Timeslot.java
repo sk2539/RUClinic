@@ -1,4 +1,4 @@
-package src;
+package clinic.src;
 
 public class Timeslot implements Comparable<Timeslot> {
     private int hour;

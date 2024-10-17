@@ -1,6 +1,6 @@
-package src;
+package clinic.src;
 
-import util.Date;
+import clinic.src.util.Date;
 
 public class Imaging extends Appointment {
     private Radiology room;
@@ -10,7 +10,7 @@ public class Imaging extends Appointment {
         this.room = room;
     }
 
-    public void setRoom(Radiology room) { // imagingAppointment.setRoom(src.Radiology.CATSCAN)
+    public void setRoom(Radiology room) { // imagingAppointment.setRoom(clinic.src.Radiology.CATSCAN)
         this.room = room;
     }
 

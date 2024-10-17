@@ -1,6 +1,6 @@
-package src;
+package clinic.src;
 
-import util.Date;
+import clinic.src.util.Date;
 
 public class Appointment implements Comparable <Appointment> {
         protected Date date;
@@ -107,11 +107,11 @@ public class Appointment implements Comparable <Appointment> {
          * Checks if this appointment is equal to another object.
          *
          * @param object The object to compare with.
-         * @return       True if the object is an src.Appointment and all fields (date, timeslot, patient, and provider) are equal.
+         * @return       True if the object is an clinic.src.Appointment and all fields (date, timeslot, patient, and provider) are equal.
          */
         @Override
         public boolean equals(Object object) {
-                if (object instanceof Appointment) { // Checks if the object is of type src.Appointment.
+                if (object instanceof Appointment) { // Checks if the object is of type clinic.src.Appointment.
                         Appointment appt = (Appointment) object;
                         return (this.date != null ? this.date.equals(appt.date) : appt.date == null)
                                 && (this.timeslot != null ? this.timeslot.equals(appt.timeslot) : appt.timeslot == null)
