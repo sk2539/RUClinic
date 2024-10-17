@@ -25,7 +25,7 @@ public abstract class Provider extends Person {
             Provider provider = (Provider) person;
             return this.profile.compareTo(provider.profile);
         }
-        throw new ClassCastException("Cannot compare non-src.Patient objects.");
+        throw new ClassCastException("Cannot compare non-Patient objects.");
     }
 
     @Override
@@ -40,10 +40,10 @@ public abstract class Provider extends Person {
     @Override
     public String toString() {
         if (this instanceof Doctor) {
-            return "[" + super.toString() + ", " + this.location + ", " + this.location.getCounty() + " " + this.location.getZip() + "]" + " [" + ((Doctor) this).getSpecialty() + ", " + ((Doctor) this).getNPI() + "]";
+            return "[" + super.toString() + ", " + this.location + ", " + this.location.getCounty() + " " + this.location.getZip() + "]" + "[" + ((Doctor) this).getSpecialty().toString().toUpperCase() + ", #" + ((Doctor) this).getNPI() + "]";
         }
         else if (this instanceof Technician) {
-            return "[" + super.toString() + ", " + this.location + ", " + this.location.getCounty() + " " + this.location.getZip() + "] [rate: " + ((Technician) this).rate() + "]";
+            return "[" + super.toString() + ", " + this.location + ", " + this.location.getCounty() + " " + this.location.getZip() + "]" + "[rate: $" + this.rate() + "]";
         }
         throw new ClassCastException("Cannot perform toString() on a non-src.Person object.");
     }

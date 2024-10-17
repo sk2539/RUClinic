@@ -43,7 +43,7 @@ public class ListMethods<E> extends List{
      */
     public void printByAppointment(List <E> objects) {
         System.out.println();
-        System.out.println("** Appointments ordered by date/time/provider.");
+        System.out.println("** List of appointments ordered by date/time/provider.");
         sort.sortByAppointment(objects);
         printAppointments(objects);
         System.out.println("** end of list **");
@@ -98,17 +98,19 @@ public class ListMethods<E> extends List{
         for (int i =0; i < objects.size(); i++) {
             E obj = objects.get(i);
             if (obj instanceof Appointment) {
-                System.out.println(formatAppointment((Appointment) obj));
+                if (((Appointment) obj).getProvider() instanceof Doctor) {
+                    System.out.println(formatAppointment((Appointment) obj));
+                }
             }
         }
     }
 
     public void printImagingAppointments(List <E> objects) {
         System.out.println();
-        System.out.println("** util.List of radiology appointments ordered by county/date/time.");
+        System.out.println("** List of radiology appointments ordered by county/date/time.");
         sort.sortByLocation(objects);
         printImagingAppts(objects);
-
+        System.out.println("** end of list **");
     }
 
     private void printImagingAppts(List <E> objects) {
@@ -229,7 +231,7 @@ public class ListMethods<E> extends List{
             counter++;
             System.out.println("(" + counter + ") " + currProvider.getProfile().toString() + " [credit amount: $" + charge + "] ");
         }
-        System.out.println();
+        System.out.println("** end of list **\n");
     }
 
     // REMEMBER TO DO PS COMMAND - ask dhyana about this
@@ -274,7 +276,7 @@ public class ListMethods<E> extends List{
         for (int i = 0; i < objects.size(); i++) {
             if (objects.get(i) instanceof Imaging) {
                 Imaging imaging = (Imaging) objects.get(i);
-                if (imaging.getProvider().equals(tech) &&
+                if (imaging.getProvider().getProfile().equals(tech.getProfile()) &&
                         imaging.getDate().equals(date) &&
                         imaging.getTimeslot().equals(timeslot)) {
                     return i; // src.Technician is NOT available (appointment found)
@@ -282,6 +284,21 @@ public class ListMethods<E> extends List{
             }
         }
         return NOT_FOUND; // src.Technician is available (no conflicting appointment found)
+    }
+
+    public int identifyImagingAppt2(List<E> imagingAppts, Profile profile, Date apptDate, Timeslot timeslot)
+    {
+        for (int i = 0; i < imagingAppts.size(); i++) {
+            if (imagingAppts.get(i) instanceof Imaging) {
+                Imaging imaging = (Imaging) imagingAppts.get(i);
+                if (imaging.getProfile().getProfile().equals(profile) &&
+                        imaging.getDate().equals(apptDate) &&
+                        imaging.getTimeslot().equals(timeslot)) {
+                    return i; // src.Technician is NOT available (appointment found)
+                }
+            }
+        }
+        return NOT_FOUND;
     }
 
     public boolean isRoomFree(List<E> objects, Technician tech, Date date, Timeslot timeslot, Radiology room) {

@@ -208,6 +208,10 @@ public class ClinicManager {
 
     public void scheduleImaging(String[] input)
     {
+        if(input.length < 7) {
+            System.out.println("Missing data tokens.");
+            return;
+        }
         //T,9/30/2024,1,John,Doe,12/13/1989,xray
         if(!checkApptDate(input[1])) {
             return;
@@ -230,24 +234,29 @@ public class ClinicManager {
             return;
         }
         Radiology room = setRadioRoom(input[6]);
-        if(techAvailable(appts, apptDate, timeslot, room) == null) {
-            System.out.println("No technician available");
-            return;
-        }
         Technician technician = techAvailable(appts, apptDate, timeslot, room);
-        Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician, room);
-        int index = methods.identifyImagingAppt(appts, technician, apptDate, timeslot);
-        System.out.println(index);
-        if (index != -1) {
-            System.out.println(appts.get(appts.indexOf(newImageAppt)).patient.getProfile().toString() + " has an existing appointment at the same timeslot.");
+        if(technician == null) {
+            System.out.println("Cannot find an available technician at all locations for " + room.toString() + " at slot " + input[2]);
             return;
         }
+        int index = methods.identifyImagingAppt2(imagingAppts, patient.getProfile(), apptDate, timeslot);
+        if (index != -1) {
+            System.out.println(appts.get(index).getProfile().toString() + " has an existing appointment at the same timeslot.");
+            return;
+        }
+
+        Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician, room);
+
         appts.add(newImageAppt);
         imagingAppts.add(newImageAppt);
-        System.out.println(newImageAppt.toString() + " created imaging appt");
+        System.out.println(input[1] + " " + timeslot.toString() + " " + profile.toString() + " " + technician.toString() + " " + room.toString() + " booked.");
     }
 
     public void scheduleDocAppt(String [] input) {
+        if(input.length < 7) {
+            System.out.println("Missing data tokens.");
+            return;
+        }
         if (!checkApptDate(input[1])) {
             return;
         }
@@ -302,10 +311,10 @@ public class ClinicManager {
             Appointment currApp = appts.get(inptApp);
             Appointment appointment = new Appointment(currApp.getDate(), currApp.getTimeslot(), currApp.getProfile(), currApp.getProvider());
             appts.remove(appointment);
-            System.out.println(date.toString() + " " + slot.toString() + " " + profile.toString() + " has been canceled.");
+            System.out.println(date.toString() + " " + slot.toString() + " " + profile.toString() + " - appointment has been canceled.");
             return;
         }
-        System.out.println(date.toString() + " " + slot.toString() + " " + profile.toString() + " does not exist.");
+        System.out.println(date.toString() + " " + slot.toString() + " " + profile.toString() + " - appointment does not exist.");
     }
 
     // Reschedule an appointment given: R, util.Date, Timeslot1, First name, Last name, DOB, Timeslot2
@@ -446,16 +455,20 @@ public class ClinicManager {
             }
         }
         if(isFirstFree){
-            return pointer.getTechnician();
+            Technician firstTech = pointer.getTechnician();
+            pointer = pointer.getNext();
+            return firstTech;
         }
         Node start = pointer;
         do {
-            Technician tech = pointer.getTechnician();
-            int techAvailable = methods.identifyImagingAppt(imaging, tech, date, timeslot);
-            boolean roomFree = methods.isRoomFree(imaging, tech, date, timeslot, room);
+            Technician currentTech = pointer.getTechnician();
+            int techAvailable = methods.identifyImagingAppt(imaging, currentTech, date, timeslot);
+            boolean roomFree = methods.isRoomFree(imaging, currentTech, date, timeslot, room);
 
             if (techAvailable == -1 && roomFree) {
-                return tech;
+                Technician selectedTech = currentTech;
+                pointer = pointer.getNext();
+                return selectedTech;
             }
             pointer = pointer.getNext();
         } while (pointer != start);

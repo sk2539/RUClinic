@@ -36,7 +36,7 @@ public class Technician extends Provider {
             }
             return profileComparison;
         }
-        throw new ClassCastException("Cannot compare non-src.Technician objects.");
+        throw new ClassCastException("Cannot compare non-Technician objects.");
     }
 
     @Override
@@ -52,6 +52,6 @@ public class Technician extends Provider {
 
     @Override
     public String toString() {
-        return super.toString() + ", Rate Per src.Visit: $" + ratePerVisit;
+        return super.toString();
     }
 }

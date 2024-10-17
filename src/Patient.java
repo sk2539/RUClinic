@@ -13,7 +13,7 @@ public class Patient extends Person {
             Patient patient = (Patient) person;
             return this.profile.compareTo(patient.profile);
         }
-        throw new ClassCastException("Cannot compare non-src.Patient objects.");
+        throw new ClassCastException("Cannot compare non-Patient objects.");
     }
 
     @Override

@@ -89,13 +89,18 @@ public class Appointment implements Comparable <Appointment> {
          * @return     An integer representing the comparison result based on the date and provider information.
          */
         public int compareByAppointment(Appointment appt) {
-                int timeslotComparison = this.date.compareTo(appt.date);
+                int dateComparison = this.date.compareTo(appt.date);
                 // If the timeslot and date are both equal, that means they are the same appointment.
-                if (timeslotComparison == 0) {
-                        int providerComparison = this.provider.compareTo(appt.provider);
-                        return providerComparison;
+                if (dateComparison == 0) {
+                        int timeslotComparison = this.timeslot.compareTo(appt.timeslot);
+                        if(this.timeslot.compareTo(appt.timeslot) == 0)
+                        {
+                                int providerComparison = this.provider.compareTo(appt.provider);
+                                return providerComparison;
+                        }
+                        return timeslotComparison;
                 }
-                return timeslotComparison;
+                return dateComparison;
         }
 
         /**

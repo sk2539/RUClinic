@@ -96,9 +96,9 @@ public class Sort<E> {
                 E obj = list.get(j);
                 E obj2 = list.get(j+1);
                 if (obj instanceof Appointment && obj2 instanceof Appointment) {
-                    if (((Appointment) obj).compareByLocation((Appointment) obj2) > 0) {
-                        swapAppointments(list, j, j + 1);
-                    }
+                        if (((Appointment) obj).compareByLocation((Appointment) obj2) > 0) {
+                            swapAppointments(list, j, j + 1);
+                        }
                 }
             }
         }
