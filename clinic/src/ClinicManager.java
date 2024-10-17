@@ -1,3 +1,6 @@
+/* @@author Dhyanashri Konduru*/
+/* @@author Nithya Konduru */
+
 package clinic.src;
 
 import clinic.src.util.*;
@@ -14,7 +17,6 @@ public class ClinicManager {
     Sort sort = new Sort();
     ListMethods methods = new ListMethods();
 
-    // this class replaces Scheduler class from project1
     public void run() {
         loadProviders();
         printProviders();

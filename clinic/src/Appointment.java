@@ -2,13 +2,27 @@ package clinic.src;
 
 import clinic.src.util.Date;
 
-public class Appointment implements Comparable <Appointment> {
+/* @@author Dhyanashri Konduru*/
+/* @@author Nithya Konduru */
+/**
+ * Represents an appointment between a patient and a provider, scheduled on a specific date and timeslot.
+ * The appointment can be compared based on various factors such as date, timeslot, patient, provider, and location.
+ */
+public class Appointment implements Comparable<Appointment> {
         protected Date date;
         protected Timeslot timeslot;
         protected Person patient;
         protected Person provider;
 
-        public Appointment (Date date, Timeslot timeslot, Person patient, Person provider) {
+        /**
+         * Constructor to create a new appointment with a specified date, timeslot, patient, and provider.
+         *
+         * @param date      The date of the appointment.
+         * @param timeslot  The timeslot of the appointment.
+         * @param patient   The patient attending the appointment.
+         * @param provider  The provider for the appointment.
+         */
+        public Appointment(Date date, Timeslot timeslot, Person patient, Person provider) {
                 this.date = date;
                 this.timeslot = timeslot;
                 this.patient = patient;
@@ -57,19 +71,13 @@ public class Appointment implements Comparable <Appointment> {
          * @return     An integer representing the comparison result based on patient information.
          */
         public int compareByPatient(Appointment appt) {
-                // Compare by last name.
                 int lastNameComparison = this.patient.getProfile().getLastName().compareTo(appt.patient.getProfile().getLastName());
-                // If last names are equal, compare by first name.
                 if (lastNameComparison == 0) {
                         int firstNameComparison = this.patient.getProfile().getFirstName().compareTo(appt.patient.getProfile().getFirstName());
-                        // If first names are equal, compare by date of birth.
                         if (firstNameComparison == 0) {
                                 int dobComparison = this.patient.getProfile().getDob().compareTo(appt.patient.getProfile().getDob());
-                                // If date of birth is also equal, compare by appointment date and time.
                                 if (dobComparison == 0) {
                                         int dateComparison = this.date.compareTo(appt.date);
-
-                                        // If dates are equal, compare by timeslot.
                                         if (dateComparison == 0) {
                                                 return this.timeslot.compareTo(appt.timeslot);
                                         }
@@ -90,7 +98,6 @@ public class Appointment implements Comparable <Appointment> {
          */
         public int compareByAppointment(Appointment appt) {
                 int dateComparison = this.date.compareTo(appt.date);
-                // If the timeslot and date are both equal, that means they are the same appointment.
                 if (dateComparison == 0) {
                         int timeslotComparison = this.timeslot.compareTo(appt.timeslot);
                         if(this.timeslot.compareTo(appt.timeslot) == 0)
@@ -107,11 +114,11 @@ public class Appointment implements Comparable <Appointment> {
          * Checks if this appointment is equal to another object.
          *
          * @param object The object to compare with.
-         * @return       True if the object is an clinic.src.Appointment and all fields (date, timeslot, patient, and provider) are equal.
+         * @return       True if the object is an Appointment and all fields (date, timeslot, patient, and provider) are equal.
          */
         @Override
         public boolean equals(Object object) {
-                if (object instanceof Appointment) { // Checks if the object is of type clinic.src.Appointment.
+                if (object instanceof Appointment) {
                         Appointment appt = (Appointment) object;
                         return (this.date != null ? this.date.equals(appt.date) : appt.date == null)
                                 && (this.timeslot != null ? this.timeslot.equals(appt.timeslot) : appt.timeslot == null)
@@ -128,8 +135,7 @@ public class Appointment implements Comparable <Appointment> {
          */
         @Override
         public String toString() {
-                // HOW TO FIX THIS??
-                //10/30/2024 4:00 PM Jane Doe 5/1/1996 [RACHAEL LIM 11/30/1975, BRIDGEWATER, Somerset 08807][PEDIATRICIAN, #23] booked.
+                // Example format: "10/30/2024 4:00 PM Jane Doe 5/1/1996 [RACHAEL LIM 11/30/1975, BRIDGEWATER, Somerset 08807][PEDIATRICIAN, #23] booked."
                 return this.provider.toString();
         }
 
@@ -160,10 +166,20 @@ public class Appointment implements Comparable <Appointment> {
                 return this.timeslot;
         }
 
+        /**
+         * Gets the patient profile associated with the appointment.
+         *
+         * @return The patient's profile.
+         */
         public Person getProfile() {
                 return this.patient;
         }
 
+        /**
+         * Gets the provider associated with the appointment, either a Technician or a Doctor.
+         *
+         * @return The provider as a Technician or Doctor, or null if neither is assigned.
+         */
         public Provider getProvider() {
                 if (this.provider instanceof Technician) {
                         return (Technician) this.provider;

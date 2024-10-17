@@ -10,6 +10,7 @@ public class Visit {
 
     /**
      * Constructs a clinic.src.Visit with a specified appointment.
+     *
      * @param appointment The appointment associated with this visit.
      */
     public Visit(Appointment appointment) {
@@ -19,6 +20,7 @@ public class Visit {
 
     /**
      * Adds a new visit to the next reference of this visit.
+     *
      * @param visit The visit to be added.
      */
     public void add(Visit visit) {
@@ -27,6 +29,7 @@ public class Visit {
 
     /**
      * Retrieves the appointment associated with this visit.
+     *
      * @return The appointment of this visit.
      */
     public Appointment getAppointment() {
@@ -35,6 +38,7 @@ public class Visit {
 
     /**
      * Retrieves the next visit in the list.
+     *
      * @return The next visit object, or null if there is none.
      */
     public Visit getVisit() {

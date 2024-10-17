@@ -1,12 +1,26 @@
 package clinic.src;
 
+/**
+ * The clinic.src.Timeslot class represents a specific time slot for appointments,
+ * using hours and minutes. This class allows setting times based on predefined
+ * slots and can compare and check equality between time slots.
+ */
 public class Timeslot implements Comparable<Timeslot> {
     private int hour;
     private int minute;
 
+    /**
+     * Default constructor for creating an empty Timeslot object.
+     */
     public Timeslot() {
     }
 
+    /**
+     * Method: Sets the timeslot based on a predefined slot number.
+     *
+     * @param slot The slot number as a string (e.g., "1" for 9:00 AM).
+     * @return true if the slot is successfully set, false if the slot is invalid.
+     */
     public boolean setTimeslot(String slot) {
         switch (slot) {
             case "1" -> { this.hour = 9; this.minute = 0; return true; }
@@ -25,23 +39,33 @@ public class Timeslot implements Comparable<Timeslot> {
         }
     }
 
+    /**
+     * Compares this timeslot to another timeslot based on the hour and minute.
+     *
+     * @param slot The timeslot to compare with.
+     * @return     A negative integer, zero, or a positive integer as this timeslot is earlier than, equal to, or later than the specified timeslot.
+     */
     @Override
     public int compareTo(Timeslot slot) {
         if (this.hour > slot.hour) {
             return 1;
-        }
-        else if (this.hour < slot.hour) {
+        } else if (this.hour < slot.hour) {
             return -1;
         }
         if (this.minute > slot.minute) {
             return 1;
-        }
-        else if (this.minute < slot.minute) {
+        } else if (this.minute < slot.minute) {
             return -1;
         }
         return 0;
     }
 
+    /**
+     * Checks if this timeslot is equal to another object.
+     *
+     * @param object The object to compare with.
+     * @return       True if the object is a timeslot with the same hour and minute; otherwise false.
+     */
     @Override
     public boolean equals(Object object) {
         if (object instanceof Timeslot) {
@@ -51,6 +75,11 @@ public class Timeslot implements Comparable<Timeslot> {
         return false;
     }
 
+    /**
+     * Returns a string representation of the timeslot in a 12-hour format (e.g., 9:00 AM).
+     *
+     * @return A string representing the timeslot.
+     */
     @Override
     public String toString() {
         String minuteString = String.format("%02d", this.minute);

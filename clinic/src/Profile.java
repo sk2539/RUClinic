@@ -16,9 +16,9 @@ public class Profile implements Comparable<Profile> {
      * Constructor: Initializes a clinic.src.Profile object with the specified first name,
      * last name, and date of birth.
      *
-     * @param fname The first name of the patient
-     * @param lname The last name of the patient
-     * @param dob The date of birth of the patient
+     * @param fname The first name of the patient.
+     * @param lname The last name of the patient.
+     * @param dob   The date of birth of the patient.
      */
     public Profile(String fname, String lname, Date dob) {
         this.fname = fname;
@@ -29,7 +29,7 @@ public class Profile implements Comparable<Profile> {
     /**
      * Method: Validates the date of birth to ensure it is not invalid, today, or a future date.
      *
-     * @return true if the date of birth is valid; false otherwise
+     * @return true if the date of birth is valid; false otherwise.
      */
     public boolean dobValid() {
         if (!this.dob.isValidDate()) {
@@ -45,7 +45,7 @@ public class Profile implements Comparable<Profile> {
     /**
      * Method: Retrieves the first name of the patient.
      *
-     * @return The first name of the patient
+     * @return The first name of the patient.
      */
     public String getFirstName() {
         return this.fname;
@@ -54,7 +54,7 @@ public class Profile implements Comparable<Profile> {
     /**
      * Method: Retrieves the last name of the patient.
      *
-     * @return The last name of the patient
+     * @return The last name of the patient.
      */
     public String getLastName() {
         return this.lname;
@@ -63,7 +63,7 @@ public class Profile implements Comparable<Profile> {
     /**
      * Method: Retrieves the date of birth of the patient.
      *
-     * @return The date of birth of the patient
+     * @return The date of birth of the patient.
      */
     public Date getDob() {
         return this.dob;
@@ -72,8 +72,8 @@ public class Profile implements Comparable<Profile> {
     /**
      * Method: Compares this clinic.src.Profile object to another object for equality.
      *
-     * @param patientProfile The object to be compared with this clinic.src.Profile
-     * @return true if the profiles are equal; false otherwise
+     * @param patientProfile The object to be compared with this clinic.src.Profile.
+     * @return true if the profiles are equal; false otherwise.
      */
     @Override
     public boolean equals(Object patientProfile) {
@@ -89,9 +89,9 @@ public class Profile implements Comparable<Profile> {
     /**
      * Method: Compares this clinic.src.Profile object with another clinic.src.Profile object for order.
      *
-     * @param patientProfile The clinic.src.Profile object to compare to
+     * @param patientProfile The clinic.src.Profile object to compare to.
      * @return A negative integer, zero, or a positive integer as this clinic.src.Profile
-     *         is less than, equal to, or greater than the specified clinic.src.Profile
+     *         is less than, equal to, or greater than the specified clinic.src.Profile.
      */
     @Override
     public int compareTo(Profile patientProfile) {
@@ -116,11 +116,10 @@ public class Profile implements Comparable<Profile> {
         return 0;
     }
 
-
     /**
      * Method: Returns a string representation of the clinic.src.Profile.
      *
-     * @return A string containing the first name, last name, and date of birth
+     * @return A string containing the first name, last name, and date of birth.
      */
     @Override
     public String toString() {
