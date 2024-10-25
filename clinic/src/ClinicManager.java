@@ -235,18 +235,17 @@ public class ClinicManager {
             System.out.println(input[6] + " - imaging service not provided");
             return;
         }
+        int index = methods.identifyImagingAppt2(imagingAppts, patient.getProfile(), apptDate, timeslot);
+        if (index != -1) {
+            System.out.println(appts.get(index).getProfile().toString() + " has an existing appointment at the same timeslot.");
+            return;
+        }
         Radiology room = setRadioRoom(input[6]);
         Technician technician = techAvailable(appts, apptDate, timeslot, room);
         if(technician == null) {
             System.out.println("Cannot find an available technician at all locations for " + room.toString() + " at slot " + input[2]);
             return;
         }
-        int index = methods.identifyImagingAppt2(imagingAppts, patient.getProfile(), apptDate, timeslot);
-        if (index != -1) {
-            System.out.println(appts.get(index).getProfile().toString() + " has an existing appointment at the same timeslot.");
-            return;
-        }
-
         Imaging newImageAppt = new Imaging(apptDate, timeslot, patient, technician, room);
 
         appts.add(newImageAppt);
@@ -452,13 +451,13 @@ public class ClinicManager {
     public Technician techAvailable(List<Appointment> imaging, Date date, Timeslot timeslot, Radiology room) {
         boolean isFirstFree = true;
         for(int i = 0; i<appts.size(); i++){
-            if(appts.get(i) instanceof Imaging){
+            if(imaging.size() != 0){
                 isFirstFree = false;
             }
         }
         if(isFirstFree){
             Technician firstTech = pointer.getTechnician();
-            pointer = pointer.getNext();
+            //pointer = pointer.getNext();
             return firstTech;
         }
         Node start = pointer;
@@ -474,6 +473,6 @@ public class ClinicManager {
             }
             pointer = pointer.getNext();
         } while (pointer != start);
-        return null; // No available technician found
+        return null;
     }
 }

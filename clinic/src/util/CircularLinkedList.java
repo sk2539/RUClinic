@@ -9,6 +9,7 @@ import clinic.src.*;
 public class CircularLinkedList {
     private Node head;
     private Node tail;
+    private int size = 0;
 
     /**
      * Default constructor that initializes an empty circular linked list.
@@ -71,10 +72,11 @@ public class CircularLinkedList {
             tail = newNode;
             newNode.next = head;
         } else {
-            tail.next = newNode;
             newNode.next = head;
             head = newNode;
+            tail.next = head;
         }
+        size++;
     }
 
     /**
@@ -97,7 +99,7 @@ public class CircularLinkedList {
             head = head.next;
             tail.next = head;
         }
-
+        size--;
         return removedTechnician;
     }
 
@@ -126,5 +128,10 @@ public class CircularLinkedList {
         } while (current != head);
 
         System.out.println();
+    }
+
+    public int getSize()
+    {
+        return size;
     }
 }

@@ -232,7 +232,7 @@ public class ListMethods<E> extends List{
                 }
             }
             counter++;
-            System.out.println("(" + counter + ") " + currProvider.getProfile().toString() + " [credit amount: $" + charge + "] ");
+            System.out.println("(" + counter + ") " + currProvider.getProfile().toString() + " [credit amount: $" + charge + ".00] ");
         }
         System.out.println("** end of list **\n");
     }
